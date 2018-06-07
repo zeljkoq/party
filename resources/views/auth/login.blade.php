@@ -5,8 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
+                <h3>Login</h3>
+                <div class="alert alert-danger" id="error" style="display: none"></div>
+                <div class="alert alert-success" id="success" style="display: none"></div>
                 <div class="card-body">
                     <form>
                         <div class="form-group row">
@@ -14,12 +15,6 @@
 
                             <div class="col-md-6">
                                 <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus>
-
-                                @if ($errors->has('username'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
                             </div>
                         </div>
 
@@ -28,12 +23,6 @@
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
                             </div>
                         </div>
 
@@ -44,8 +33,6 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="alert alert-danger" id="error" style="display: none"></div>
-                        <div class="alert alert-success" id="success" style="display: none"></div>
                     </form>
                 </div>
             </div>

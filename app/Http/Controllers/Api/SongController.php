@@ -18,7 +18,6 @@ class SongController extends Controller
      */
     public function index()
     {
-        return SongResource::collection(Song::orderByDesc('created_at')
-            ->paginate(5));
+        return SongResource::collection(Song::all());
     }
 }

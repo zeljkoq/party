@@ -20,8 +20,7 @@ class AdminSongController extends Controller
      */
     public function index()
     {
-        return AdminSongResource::collection(Song::orderByDesc('created_at')
-            ->paginate(5));
+        return AdminSongResource::collection(Song::all());
     }
 
     /**

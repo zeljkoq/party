@@ -3,7 +3,7 @@
 @section('content')
     <div class="box">
         <h3>List of songs</h3>
-        <table>
+        <table id="dataTable">
             <thead style="background-color: #ddd; font-weight: bold;">
             <tr>
                 <td>Id</td>
@@ -39,38 +39,16 @@
                         html += '<td>' + songs[i].name + '</td>';
                         html += '<td>' + songs[i].author + '</td>';
                         html += '<td><a target="_blank" href="' + songs[i].link + '">' + songs[i].link + '</a></td>';
-                        html += '<td>' + songs[i].duration + '</td>';
+                        html += '<td>' + songs[i].duration + ' minute/s</td>';
                         html += '</tr>';
                     }
                     $('#tableBody').html(html);
-                    paginate = makePagination(data.links);
-                    $('#pagination').html(paginate);
+                    $('#dataTable').each(function() {
+                        dt = $(this).dataTable();
+                        dt.fnDraw();
+                    });
                 }
             });
         });
-        function getPaginate(link){
-            $.ajax({
-                url: link,
-                headers: {
-                    "Authorization":getFromStorage('Authorization')
-                },
-                success: function(data) {
-                    songs = data.data;
-                    html = '';
-                    for (i = 0; i < songs.length; i++) {
-                        html += '<tr>';
-                        html += '<td>' + songs[i].id + '</td>';
-                        html += '<td>' + songs[i].name + '</td>';
-                        html += '<td>' + songs[i].author + '</td>';
-                        html += '<td><a target="_blank" href="' + songs[i].link + '">' + songs[i].link + '</a></td>';
-                        html += '<td>' + songs[i].duration + '</td>';
-                        html += '</tr>';
-                    }
-                    $('#tableBody').html(html);
-                    paginate = makePagination(data.links);
-                    $('#pagination').html(paginate);
-                }
-            });
-        }
     </script>
 @stop

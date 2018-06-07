@@ -23,7 +23,7 @@
     </div>
     <div class="box">
         <h3>List of songs</h3>
-        <table>
+        <table id="dataTable">
             <thead style="background-color: #ddd; font-weight: bold;">
             <tr>
                 <td>Id</td>
@@ -100,8 +100,10 @@
                 success: function (data) {
                     html = fillTable(data.data);
                     $('#tableBody').html(html);
-                    paginate = makePagination(data.links);
-                    $('#pagination').html(paginate);
+                    $('#dataTable').each(function() {
+                        dt = $(this).dataTable();
+                        dt.fnDraw();
+                    });
                 },
                 error: function (data) {
                     if(data.statusText == "Unauthorized"){
@@ -156,6 +158,10 @@
                             $('td:contains("'+data.id+'")').parent().css('display', 'none');
                         }
                         showPageMessages(data);
+                        $('#dataTable').each(function() {
+                            dt = $(this).dataTable();
+                            dt.fnDraw();
+                        });
                     },
                     error: function (data) {
                         if(data.statusText == "Unauthorized"){
@@ -163,26 +169,6 @@
                         }
                     }
                 });
-            });
-        }
-
-        function getPaginate(link){
-            $.ajax({
-                url: link,
-                headers: {
-                    "Authorization":getFromStorage('Authorization')
-                },
-                success: function(data) {
-                    html = fillTable(data.data);
-                    $('#tableBody').html(html);
-                    paginate = makePagination(data.links);
-                    $('#pagination').html(paginate);
-                },
-                error: function (data) {
-                    if(data.statusText == "Unauthorized"){
-                        window.location = "/";
-                    }
-                }
             });
         }
     </script>

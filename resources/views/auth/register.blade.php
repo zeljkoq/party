@@ -5,8 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
-
+                <h3>Register</h3>
                 <div class="card-body">
                     <form>
                         <div class="form-group row">
