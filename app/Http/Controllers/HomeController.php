@@ -5,20 +5,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * Class HomeController
+ *
+ * @package App\Http\Controllers
+ */
 class HomeController extends Controller
 {
     /**
-     * Show the application dashboard.
+     * @param Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
         return view('home.index');
-//        $header = $request->header('Authorization');
-//        dd($header);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function sendMail(Request $request)
     {
         $data = $request->message;

@@ -55,8 +55,26 @@
 @endsection
 @section('per_page_scripts')
     <script>
-        $('#login').on('click', function(){
+        function showPageMessages(data){
+            showMessages(data);
+            if (typeof data.username !== 'undefined') {
+                $('#usernameError').text(data.username);
+                $('#usernameError').css('display', 'block');
+            }
+            if (typeof data.password !== 'undefined') {
+                $('#passwordError').text(data.password);
+                $('#passwordError').css('display', 'block');
+            }
+        }
+        function hidePageMessages(){
             hideMessages();
+            $('#usernameError').css('display', 'none');
+            $('#passwordError').css('display', 'none');
+        }
+    </script>
+    <script>
+        $('#login').on('click', function(){
+            hidePageMessages();
             var username = $('#username').val();
             var password = $('#password').val();
             $.ajax({
@@ -68,7 +86,7 @@
                     window.location = "{{ route('home') }}";
                 },
                 error: function(data) {
-                    showMessages(data.responseJSON);
+                    showPageMessages(data.responseJSON);
                 }
             });
         });

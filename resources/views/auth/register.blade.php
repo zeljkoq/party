@@ -52,8 +52,31 @@
 @endsection
 @section('per_page_scripts')
     <script>
-        $('#register').on('click', function(){
+        function showPageMessages(data){
+            showMessages(data);
+            if (typeof data.username !== 'undefined') {
+                $('#usernameError').text(data.username);
+                $('#usernameError').css('display', 'block');
+            }
+            if (typeof data.password !== 'undefined') {
+                $('#passwordError').text(data.password);
+                $('#passwordError').css('display', 'block');
+            }
+            if (typeof data.passwordConfirm !== 'undefined') {
+                $('#passwordConfirmError').text(data.passwordConfirm);
+                $('#passwordConfirmError').css('display', 'block');
+            }
+        }
+        function hidePageMessages(){
             hideMessages();
+            $('#usernameError').css('display', 'none');
+            $('#passwordError').css('display', 'none');
+            $('#passwordConfirmError').css('display', 'none');
+        }
+    </script>
+    <script>
+        $('#register').on('click', function(){
+            hidePageMessages();
             var username = $('#username').val();
             var password = $('#password').val();
             var passwordConfirm = $('#password-confirm').val();
@@ -66,7 +89,7 @@
                     window.location = "{{ route('home') }}";
                 },
                 error: function(data) {
-                    showMessages(data.responseJSON.errors);
+                    showPageMessages(data.responseJSON.errors);
                 }
             });
         });

@@ -26,9 +26,6 @@ function logoutUser() {
 function hideMessages(){
     $('#success').css('display', 'none');
     $('#error').css('display', 'none');
-    $('#usernameError').css('display', 'none');
-    $('#passwordError').css('display', 'none');
-    $('#passwordConfirmError').css('display', 'none');
 }
 
 function showMessages(data){
@@ -39,18 +36,6 @@ function showMessages(data){
     if (typeof data.error !== 'undefined') {
         $('#error').text(data.error);
         $('#error').css('display', 'block');
-    }
-    if (typeof data.username !== 'undefined') {
-        $('#usernameError').text(data.username);
-        $('#usernameError').css('display', 'block');
-    }
-    if (typeof data.password !== 'undefined') {
-        $('#passwordError').text(data.password);
-        $('#passwordError').css('display', 'block');
-    }
-    if (typeof data.passwordConfirm !== 'undefined') {
-        $('#passwordConfirmError').text(data.passwordConfirm);
-        $('#passwordConfirmError').css('display', 'block');
     }
 }
 

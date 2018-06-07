@@ -16,18 +16,23 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $fillable
+        = [
+            'name',
+            'email',
+            'password',
+        ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $hidden
+        = [
+            'password',
+            'remember_token',
+        ];
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -47,5 +52,63 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role', 'user_role');
+    }
+
+    /**
+     * @param $roles
+     *
+     * @return bool
+     */
+    public function hasAnyRole($roles)
+    {
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if ($this->hasRole($role)) {
+                    return true;
+                }
+            }
+        } else {
+            if ($this->hasRole($roles)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param $role
+     *
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        if ($this->roles()->where('name', $role)->first()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->hasRole('Admin') ? true : false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDJ()
+    {
+        return $this->hasRole('DJ') ? true : false;
     }
 }

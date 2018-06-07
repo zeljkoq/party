@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Song\SongResource;
 use App\Models\Song;
 
+/**
+ * Class SongController
+ *
+ * @package App\Http\Controllers\Api
+ */
 class SongController extends Controller
 {
     /**
@@ -13,6 +18,7 @@ class SongController extends Controller
      */
     public function index()
     {
-        return SongResource::collection(Song::paginate(5));
+        return SongResource::collection(Song::orderByDesc('created_at')
+            ->paginate(5));
     }
 }
