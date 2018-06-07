@@ -2,19 +2,13 @@
 
 @section('nav')
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('home') }}">Home</a>
+        <a class="nav-link" href="{{ route('admin.home') }}">Home</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('songs') }}">Songs</a>
-    </li>
-    <li class="nav-item" id="navLogin">
-        <a class="nav-link" href="{{ route('loginForm') }}">Login</a>
-    </li>
-    <li class="nav-item" id="navRegister">
-        <a class="nav-link" href="{{ route('registerForm') }}">Register</a>
+        <a class="nav-link" href="{{ route('admin.songs') }}">Songs</a>
     </li>
     <li class="nav-item" id="navAdmin">
-        <a class="nav-link" href="{{ route('admin.home') }}">Admin</a>
+        <a class="nav-link" href="{{ route('home') }}">Site</a>
     </li>
     <li class="nav-item" id="navLogout">
         <a class="nav-link" href="javascript:void(0)" onclick="logoutUser()">Logout</a>

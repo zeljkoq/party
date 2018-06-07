@@ -21,3 +21,56 @@
     height: 400px;  /* The height is 400 pixels */
     width: 100%;  /* The width is the width of the web page */
 }
+
+.unauthorize-modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 15;
+}
+
+.modal-background {
+    background-color: rgba(0, 0, 0, 0.85);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.modal-card {
+    border-radius: 5px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 25px;
+    color: #000;
+    background-color: #ccc;
+}
+
+.modal-card p {
+    margin-bottom: 25px;
+}
+
+.modal-card-actions {
+    display: flex;
+    justify-content: space-around;
+}
+
+.modal-card .btn-info {
+    min-width: 25%;
+    margin-right: 0;
+}
+
+.close-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    font-size: 28px;
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: bold;
+}

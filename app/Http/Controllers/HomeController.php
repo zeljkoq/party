@@ -12,9 +12,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('home.index');
+//        $header = $request->header('Authorization');
+//        dd($header);
     }
 
     public function sendMail(Request $request)

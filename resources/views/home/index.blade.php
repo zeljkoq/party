@@ -35,6 +35,7 @@
     <div id="map"></div>
 @stop
 @section('per_page_scripts')
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvXfffc-1y5IA31mA03cfgCvTICaUMTV4&callback=initMap"></script>
     <script>
         $("#slideshow > div:gt(0)").hide();
 

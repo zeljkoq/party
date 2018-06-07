@@ -8,34 +8,13 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
+                    <form>
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                                <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required>
+                                <p id="usernameError"></p>
                             </div>
                         </div>
 
@@ -44,12 +23,7 @@
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                                <p id="passwordError"></p>
                             </div>
                         </div>
 
@@ -58,12 +32,13 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <p id="passwordConfirmError"></p>
                             </div>
                         </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="button" id="register" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
                             </div>
@@ -75,3 +50,25 @@
     </div>
 </div>
 @endsection
+@section('per_page_scripts')
+    <script>
+        $('#register').on('click', function(){
+            hideMessages();
+            var username = $('#username').val();
+            var password = $('#password').val();
+            var passwordConfirm = $('#password-confirm').val();
+            $.ajax({
+                url: '{{ route('register') }}',
+                type: 'POST',
+                data: ({username: username, password: password, passwordConfirm: passwordConfirm}),
+                success: function(data) {
+                    addInStorage('Authorization', 'Bearer ' + data.access_token);
+                    window.location = "{{ route('home') }}";
+                },
+                error: function(data) {
+                    showMessages(data.responseJSON.errors);
+                }
+            });
+        });
+    </script>
+@stop

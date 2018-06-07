@@ -8,9 +8,7 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
+                    <form>
                         <div class="form-group row">
                             <label for="username" class="col-sm-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
@@ -39,27 +37,15 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="button" id="login" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('Forgot Your Password?') }}
-                                </a>
                             </div>
                         </div>
+                        <div class="alert alert-danger" id="error" style="display: none"></div>
+                        <div class="alert alert-success" id="success" style="display: none"></div>
                     </form>
                 </div>
             </div>
@@ -67,3 +53,24 @@
     </div>
 </div>
 @endsection
+@section('per_page_scripts')
+    <script>
+        $('#login').on('click', function(){
+            hideMessages();
+            var username = $('#username').val();
+            var password = $('#password').val();
+            $.ajax({
+                url: '{{ route('login') }}',
+                type: 'POST',
+                data: ({username: username, password: password}),
+                success: function(data) {
+                    addInStorage('Authorization', 'Bearer ' + data.access_token);
+                    window.location = "{{ route('home') }}";
+                },
+                error: function(data) {
+                    showMessages(data.responseJSON);
+                }
+            });
+        });
+    </script>
+@stop
