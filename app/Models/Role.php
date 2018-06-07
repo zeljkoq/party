@@ -9,9 +9,11 @@ class Role extends Model
     /**
      * @var array
      */
-    protected $fillable = [
-        'name'
-    ];
+    protected $fillable
+        = [
+            'name'
+        ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

@@ -7,6 +7,9 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.songs') }}">Songs</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.parties') }}">Parties</a>
+    </li>
     <li class="nav-item" id="navAdmin">
         <a class="nav-link" href="{{ route('home') }}">Site</a>
     </li>

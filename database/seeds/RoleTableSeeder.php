@@ -19,5 +19,8 @@ class RoleTableSeeder extends Seeder
         Role::create([
             'name' => 'DJ',
         ]);
+        Role::create([
+            'name' => 'Party Maker',
+        ]);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Song extends Model
+class Party extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -14,8 +14,10 @@ class Song extends Model
     protected $fillable
         = [
             'name',
-            'author',
-            'link',
+            'date',
             'duration',
+            'capacity',
+            'description',
+            'cover_photo',
         ];
 }

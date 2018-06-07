@@ -12,3 +12,6 @@ Route::get('admin/home', 'Admin\AdminHomeController@index')->name('admin.home');
 
 Route::get('admin/songs', 'Admin\AdminSongController@index')->name('admin.songs');
 Route::get('admin/songs/edit/{song_id}', 'Admin\AdminSongController@edit')->name('admin.songs.edit');
+
+Route::get('admin/parties', 'Admin\AdminPartyController@index')->name('admin.parties');
+Route::get('admin/parties/edit/{party_id}', 'Admin\AdminPartyController@edit')->name('admin.parties.edit');
