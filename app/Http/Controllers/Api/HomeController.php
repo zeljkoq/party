@@ -11,6 +11,11 @@ class HomeController extends Controller
     public function index()
     {
         $parties = Party::all();
-        return PartyResource::collection(Party::all());
+        foreach ($parties as $key => $party) {
+            if ($party->date < date('Y-m-d')) {
+                unset($parties[$key]);
+            }
+        }
+        return PartyResource::collection($parties);
     }
 }
