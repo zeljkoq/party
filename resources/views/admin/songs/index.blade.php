@@ -80,7 +80,7 @@
                 html += '<td>' + songs[i].name + '</td>';
                 html += '<td>' + songs[i].author + '</td>';
                 html += '<td><a target="_blank" href="' + songs[i].link + '">' + songs[i].link + '</a></td>';
-                html += '<td>' + songs[i].duration + '</td>';
+                html += '<td>' + songs[i].duration + ' minute/s</td>';
                 html += '<td><a href="'+songs[i].edit_link+'">edit</a></td>';
                 html += '<td><a href="javascript:void(0)" onclick="confirmationModal(\'Are you sure you want to delete this song?\', \'Delete\', \''+songs[i].delete_link+'\')">delete</a></td>';
                 html += '</tr>';
@@ -158,10 +158,6 @@
                             $('td:contains("'+data.id+'")').parent().css('display', 'none');
                         }
                         showPageMessages(data);
-                        $('#dataTable').each(function() {
-                            dt = $(this).dataTable();
-                            dt.fnDraw();
-                        });
                     },
                     error: function (data) {
                         if(data.statusText == "Unauthorized"){

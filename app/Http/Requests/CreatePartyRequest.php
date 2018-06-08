@@ -24,7 +24,12 @@ class CreatePartyRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|min:4',
+            'date' => 'required',
+            'duration' => 'required|integer',
+            'capacity' => 'required|integer',
+            'description' => 'nullable|min:10',
+            'cover_photo' => 'file',
         ];
     }
 }

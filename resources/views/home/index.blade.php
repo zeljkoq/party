@@ -10,6 +10,20 @@
         </div>
     </div>
     <br>
+    <table id="dataTable">
+        <thead style="background-color: #ddd; font-weight: bold;">
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>Date</td>
+            <td>Duration</td>
+            <td>Capacity</td>
+            <td>Description</td>
+        </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+    <br>
     <div class="row">
         <div class="col-md-6 text-center">
             <br><br>
@@ -57,6 +71,41 @@
         }
     </script>
     <script>
+        function fillTable(parties){
+            var html = '';
+            for (i=0;i<parties.length;i++){
+                html += '<tr>';
+                html += '<td>' + parties[i].id + '</td>';
+                html += '<td>' + parties[i].name + '</td>';
+                html += '<td>' + parties[i].date + '</td>';
+                html += '<td>' + parties[i].duration + '</td>';
+                html += '<td>' + parties[i].capacity + '</td>';
+                html += '<td>' + parties[i].description + '</td>';
+                html += '</tr>';
+            }
+            return html;
+        }
+
+        $(document).ready(function() {
+            $.ajax({
+                url: '{{ route('home.index') }}',
+                headers: {
+                    "Authorization":getFromStorage('Authorization')
+                },
+                success: function (data) {
+                    html = fillTable(data.data);
+                    $('#tableBody').html(html);
+                    $('#dataTable').each(function() {
+                        dt = $(this).dataTable();
+                        dt.fnDraw();
+                    });
+                },
+                error: function (data) {
+                    $('#dataTable').dataTable();
+                }
+            });
+        });
+
         $('#sendMail').on('click', function(){
             var name = $('#name').val();
             var email = $('#email').val();

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Party extends Model
+class Tag extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,19 +13,14 @@ class Party extends Model
      */
     protected $fillable
         = [
-            'name',
-            'date',
-            'duration',
-            'capacity',
-            'description',
-            'cover_photo',
+            'name'
         ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function tags()
+    public function parties()
     {
-        return $this->belongsToMany('App\Models\Tag');
+        return $this->belongsToMany('App\Models\Party');
     }
 }

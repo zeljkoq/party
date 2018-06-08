@@ -4,6 +4,11 @@ Route::post('login', 'Auth\Api\LoginController@login')->name('login');
 Route::post('register', 'Auth\Api\RegisterController@register')->name('register');
 
 Route::middleware('jwt.auth')->group(function () {
+    Route::get('home', [
+        'uses' => 'Api\HomeController@index',
+        'as' => 'home.index',
+    ]);
+
     Route::get('songs', [
         'uses' => 'Api\SongController@index',
         'as' => 'songs.index',
