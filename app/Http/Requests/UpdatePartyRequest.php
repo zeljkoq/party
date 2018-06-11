@@ -24,7 +24,7 @@ class UpdatePartyRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:4',
+            'name' => 'required|min:4|max:20',
             'date' => 'required',
             'duration' => 'required|integer',
             'capacity' => 'required|integer',

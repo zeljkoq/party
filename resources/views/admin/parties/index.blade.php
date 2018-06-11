@@ -55,46 +55,10 @@
 @stop
 @section('per_page_scripts')
     <script>
-        function showPageMessages(data){
-            showMessages(data);
-            if (typeof data.name !== 'undefined') {
-                $('#nameError').text(data.name);
-                $('#nameError').css('display', 'block');
-            }
-            if (typeof data.date !== 'undefined') {
-                $('#dateError').text(data.date);
-                $('#dateError').css('display', 'block');
-            }
-            if (typeof data.duration !== 'undefined') {
-                $('#durationError').text(data.duration);
-                $('#durationError').css('display', 'block');
-            }
-            if (typeof data.capacity !== 'undefined') {
-                $('#capacityError').text(data.capacity);
-                $('#capacityError').css('display', 'block');
-            }
-            if (typeof data.description !== 'undefined') {
-                $('#descriptionError').text(data.description);
-                $('#descriptionError').css('display', 'block');
-            }
-            if (typeof data.tags !== 'undefined') {
-                $('#tagsError').text(data.tags);
-                $('#tagsError').css('display', 'block');
-            }
-            if (typeof data.cover_photo !== 'undefined') {
-                $('#coverPhotoError').text(data.cover_photo);
-                $('#coverPhotoError').css('display', 'block');
-            }
-        }
-        function hidePageMessages(){
-            hideMessages();
-            $('#nameError').css('display', 'none');
-            $('#dateError').css('display', 'none');
-            $('#durationError').css('display', 'none');
-            $('#capacityError').css('display', 'none');
-            $('#descriptionError').css('display', 'none');
-            $('#tagsError').css('display', 'none');
-            $('#coverPhotoError').css('display', 'none');
+        function getElementsForMessages(){
+            return [
+                'error', 'success', 'name', 'date', 'duration', 'capacity', 'description', 'tags', 'coverPhoto'
+            ]
         }
     </script>
     <script>
@@ -105,11 +69,11 @@
                 html += '<td>' + parties[i].id + '</td>';
                 html += '<td>' + parties[i].name + '</td>';
                 html += '<td>' + parties[i].date + '</td>';
-                html += '<td>' + parties[i].duration + '</td>';
-                html += '<td>' + parties[i].capacity + '</td>';
+                html += '<td>' + parties[i].duration + ' minute/s</td>';
+                html += '<td>' + parties[i].capacity + ' persons</td>';
                 html += '<td>' + parties[i].description + '</td>';
                 html += '<td><a href="'+parties[i].edit_link+'">edit</a></td>';
-                html += '<td><a href="javascript:void(0)" onclick="confirmationModal(\'Are you sure you want to delete this party?\', \'Delete\', \''+parties[i].delete_link+'\')">delete</a></td>';
+                html += '<td><a href="javascript:void(0)" onclick="deleteModal(\'Are you sure you want to delete this party?\', \'Delete\', \''+parties[i].delete_link+'\')">delete</a></td>';
                 html += '</tr>';
             }
             return html;
@@ -133,10 +97,8 @@
                     "Authorization":getFromStorage('Authorization')
                 },
                 success: function (data) {
-                    html = fillTable(data.parties);
-                    $('#tableBody').html(html);
-                    html = fillSelect(data.tags);
-                    $('#selectBody').html(html);
+                    $('#tableBody').html(fillTable(data.parties));
+                    $('#selectBody').html(fillSelect(data.tags));
                     $('#dataTable').each(function() {
                         dt = $(this).dataTable();
                         dt.fnDraw();
@@ -151,7 +113,7 @@
         });
 
         $('#submitAddSong').on('click', function(){
-            hidePageMessages();
+            hideMessages(getElementsForMessages());
             var formData = new FormData(document.forms[0]);
             formData.append('cover_photo', $('#cover_photo')[0].files[0]);
             $.ajax({
@@ -164,26 +126,25 @@
                 processData: false,
                 data: formData,
                 success: function(data) {
-                    showPageMessages(data);
-                    html = fillTable([data.data]);
-                    $('#tableBody').prepend(html);
+                    showMessages(data, getElementsForMessages());
+                    $('#tableBody').prepend(fillTable([data.data]));
                 },
                 error: function(data) {
                     if(data.statusText == "Unauthorized"){
                         window.location = "/";
                     }
-                    showPageMessages(data.responseJSON.errors);
+                    showMessages(data.responseJSON.errors, getElementsForMessages());
                 }
             });
         });
 
-        function confirmationModal(message, button, url) {
+        function deleteModal(message, button, url) {
             $('#conf-message').text(message);
             $('#button').text(button);
             $('#confirmationModal').css('display', 'block');
             $('#button').on('click', function(){
                 $('#confirmationModal').css('display', 'none');
-                hidePageMessages();
+                hideMessages(getElementsForMessages());
                 $.ajax({
                     url: url,
                     headers: {
@@ -194,7 +155,7 @@
                         if (typeof data.id !== 'undefined') {
                             $('td:contains("'+data.id+'")').parent().css('display', 'none');
                         }
-                        showPageMessages(data);
+                        showMessages(data, getElementsForMessages());
                     },
                     error: function (data) {
                         if(data.statusText == "Unauthorized"){

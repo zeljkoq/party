@@ -42,26 +42,15 @@
 @endsection
 @section('per_page_scripts')
     <script>
-        function showPageMessages(data){
-            showMessages(data);
-            if (typeof data.username !== 'undefined') {
-                $('#usernameError').text(data.username);
-                $('#usernameError').css('display', 'block');
-            }
-            if (typeof data.password !== 'undefined') {
-                $('#passwordError').text(data.password);
-                $('#passwordError').css('display', 'block');
-            }
-        }
-        function hidePageMessages(){
-            hideMessages();
-            $('#usernameError').css('display', 'none');
-            $('#passwordError').css('display', 'none');
+        function getElementsForMessages(){
+            return [
+                'error', 'success', 'username', 'password'
+            ]
         }
     </script>
     <script>
         $('#login').on('click', function(){
-            hidePageMessages();
+            hideMessages(getElementsForMessages());
             var username = $('#username').val();
             var password = $('#password').val();
             $.ajax({
@@ -73,7 +62,7 @@
                     window.location = "{{ route('home') }}";
                 },
                 error: function(data) {
-                    showPageMessages(data.responseJSON);
+                    showMessages(data.responseJSON, getElementsForMessages());
                 }
             });
         });

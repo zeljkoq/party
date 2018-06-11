@@ -32,36 +32,10 @@
 @stop
 @section('per_page_scripts')
     <script>
-        function showPageMessages(data){
-            showMessages(data);
-            if (typeof data.name !== 'undefined') {
-                $('#nameError').text(data.name);
-                $('#nameError').css('display', 'block');
-            }
-            if (typeof data.date !== 'undefined') {
-                $('#dateError').text(data.date);
-                $('#dateError').css('display', 'block');
-            }
-            if (typeof data.duration !== 'undefined') {
-                $('#durationError').text(data.duration);
-                $('#durationError').css('display', 'block');
-            }
-            if (typeof data.capacity !== 'undefined') {
-                $('#capacityError').text(data.capacity);
-                $('#capacityError').css('display', 'block');
-            }
-            if (typeof data.description !== 'undefined') {
-                $('#descriptionError').text(data.description);
-                $('#descriptionError').css('display', 'block');
-            }
-        }
-        function hidePageMessages(){
-            hideMessages();
-            $('#nameError').css('display', 'none');
-            $('#dateError').css('display', 'none');
-            $('#durationError').css('display', 'none');
-            $('#capacityError').css('display', 'none');
-            $('#descriptionError').css('display', 'none');
+        function getElementsForMessages(){
+            return [
+                'error', 'success', 'name', 'date', 'duration', 'capacity', 'description'
+            ]
         }
     </script>
     <script>
@@ -99,7 +73,7 @@
                     "Authorization":getFromStorage('Authorization')
                 },
                 success: function(data) {
-                    showPageMessages(data);
+                    showMessages(data, getElementsForMessages());
                     fillForm(data.parties);
                     $('#tags').html(fillSelect(data.tags, data.parties.tags));
                 },
@@ -112,7 +86,7 @@
         });
 
         $('#submitUpdateSong').on('click', function(){
-            hidePageMessages();
+            hideMessages(getElementsForMessages());
             var name = $('#name').val();
             var date = $('#date').val();
             var duration = $('#duration').val();
@@ -127,14 +101,14 @@
                 type: 'PUT',
                 data: ({name: name, date: date, duration: duration, capacity: capacity, description: description, tags: tags}),
                 success: function(data) {
-                    showPageMessages(data);
+                    showMessages(data, getElementsForMessages());
                     fillForm(data.data);
                 },
                 error: function(data) {
                     if(data.statusText == "Unauthorized"){
                         window.location = "/";
                     }
-                    showPageMessages(data.responseJSON.errors);
+                    showMessages(data.responseJSON.errors, getElementsForMessages());
                 }
             });
         });

@@ -23,18 +23,17 @@ function logoutUser() {
     window.location = "/";
 }
 
-function hideMessages(){
-    $('#success').css('display', 'none');
-    $('#error').css('display', 'none');
+function hideMessages(elementIDs) {
+    for(var i=0;i<elementIDs.length;i++){
+        $('#'+elementIDs[i]+'Mess').css('display', 'none');
+    }
 }
 
-function showMessages(data){
-    if (typeof data.success !== 'undefined') {
-        $('#success').text(data.success);
-        $('#success').css('display', 'block');
-    }
-    if (typeof data.error !== 'undefined') {
-        $('#error').text(data.error);
-        $('#error').css('display', 'block');
+function showMessages(data, names) {
+    for(var i=0;i<names.length;i++){
+        if (typeof data.names[i] !== 'undefined') {
+            $('#'+names[i]+'Mess').text(data.success);
+            $('#'+names[i]+'Mess').css('display', 'block');
+        }
     }
 }

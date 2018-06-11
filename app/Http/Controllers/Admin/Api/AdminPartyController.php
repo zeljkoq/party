@@ -5,10 +5,16 @@ namespace App\Http\Controllers\Admin\Api;
 use App\Http\Requests\CreatePartyRequest;
 use App\Http\Requests\UpdatePartyRequest;
 use App\Http\Resources\Party\AdminPartyResource;
+use App\Http\Resources\Tag\TagResource;
 use App\Models\Party;
 use App\Models\Tag;
 use App\Http\Controllers\Controller;
 
+/**
+ * Class AdminPartyController
+ *
+ * @package App\Http\Controllers\Admin\Api
+ */
 class AdminPartyController extends Controller
 {
     /**
@@ -18,7 +24,7 @@ class AdminPartyController extends Controller
     {
         return [
             'parties' => AdminPartyResource::collection(Party::all()),
-            'tags' => Tag::all()
+            'tags' => TagResource::collection(Tag::all())
         ];
     }
 
@@ -40,7 +46,7 @@ class AdminPartyController extends Controller
                 ->storeAs('cover_photos', rand(11111, 99999) . "_" . $request->cover_photo->getClientOriginalName());
             $party->user_id = Auth()->user()->id;
             $party->save();
-            $tags = $request->tags;
+            $tags = $this->createTagsIfNotExists($request->tags);
             foreach ($tags as $key => $tag) {
                 if (!is_numeric($tag)) {
                     $newTag = new Tag;
@@ -62,7 +68,7 @@ class AdminPartyController extends Controller
     }
 
     /**
-     * @param $party_id
+     * @param int $party_id
      *
      * @return array
      */
@@ -70,7 +76,7 @@ class AdminPartyController extends Controller
     {
         return [
             'parties' => new AdminPartyResource(Party::findOrFail($party_id)),
-            'tags' => Tag::all()
+            'tags' => TagResource::collection(Tag::all())
         ];
     }
 
@@ -90,15 +96,7 @@ class AdminPartyController extends Controller
             $party->capacity = $request->capacity;
             $party->description = $request->description;
             $party->save();
-            $tags = $request->tags;
-            foreach ($tags as $key => $tag) {
-                if (!is_numeric($tag)) {
-                    $newTag = new Tag;
-                    $newTag->name = $tag;
-                    $newTag->save();
-                    $tags[$key] = $newTag->id;
-                }
-            }
+            $tags = $this->createTagsIfNotExists($request->tags);
             $party->tags()->sync($tags);
             return response([
                 'data' => new AdminPartyResource($party),
@@ -130,5 +128,18 @@ class AdminPartyController extends Controller
                 'error' => 'Error! Please, try again.'
             ]);
         }
+    }
+
+    public function createTagsIfNotExists($tags)
+    {
+        foreach ($tags as $key => $tag) {
+            if (!is_numeric($tag)) {
+                $newTag = new Tag;
+                $newTag->name = $tag;
+                $newTag->save();
+                $tags[$key] = $newTag->id;
+            }
+        }
+        return $tags;
     }
 }

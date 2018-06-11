@@ -35,6 +35,14 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">User role</label>
+
+                            <div class="col-md-6">
+                                <select name="user_role" id="roles"></select>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="button" id="register" class="btn btn-primary">
@@ -51,44 +59,46 @@
 @endsection
 @section('per_page_scripts')
     <script>
-        function showPageMessages(data){
-            showMessages(data);
-            if (typeof data.username !== 'undefined') {
-                $('#usernameError').text(data.username);
-                $('#usernameError').css('display', 'block');
-            }
-            if (typeof data.password !== 'undefined') {
-                $('#passwordError').text(data.password);
-                $('#passwordError').css('display', 'block');
-            }
-            if (typeof data.passwordConfirm !== 'undefined') {
-                $('#passwordConfirmError').text(data.passwordConfirm);
-                $('#passwordConfirmError').css('display', 'block');
-            }
+        function getElementsForMessages(){
+            return [
+                'error', 'success', 'username', 'password', 'passwordConfirm'
+            ]
         }
-        function hidePageMessages(){
-            hideMessages();
-            $('#usernameError').css('display', 'none');
-            $('#passwordError').css('display', 'none');
-            $('#passwordConfirmError').css('display', 'none');
+
+        function fillSelect(roles){
+            var html = '';
+            for (i=0;i<roles.length;i++){
+                html += '<option value="'+ roles[i].id+'">' + roles[i].name + '</option>';
+            }
+            return html;
         }
     </script>
     <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '{{ route('register.roles') }}',
+                success: function(data) {
+                    $('#roles').html(fillSelect(data.data));
+                }
+            });
+        });
+
         $('#register').on('click', function(){
-            hidePageMessages();
+            hideMessages(getElementsForMessages());
             var username = $('#username').val();
             var password = $('#password').val();
             var passwordConfirm = $('#password-confirm').val();
+            var userRole = $('#roles').val();
             $.ajax({
                 url: '{{ route('register') }}',
                 type: 'POST',
-                data: ({username: username, password: password, passwordConfirm: passwordConfirm}),
+                data: ({username: username, password: password, passwordConfirm: passwordConfirm, userRole: userRole}),
                 success: function(data) {
                     addInStorage('Authorization', 'Bearer ' + data.access_token);
                     window.location = "{{ route('home') }}";
                 },
                 error: function(data) {
-                    showPageMessages(data.responseJSON.errors);
+                    showMessages(data.responseJSON.errors, getElementsForMessages());
                 }
             });
         });

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\Role\RoleResource;
 use App\Models\User;
+use App\Models\Role;
 
 /**
  * Class RegisterController
@@ -13,6 +15,11 @@ use App\Models\User;
  */
 class RegisterController extends Controller
 {
+    public function getRoles()
+    {
+        return RoleResource::collection(Role::all());
+    }
+
     /**
      * @param RegisterRequest $request
      *
@@ -24,6 +31,8 @@ class RegisterController extends Controller
         $user->username = $request->username;
         $user->password = bcrypt($request->password);
         $user->save();
+
+        $user->roles()->attach($request->userRole);
 
         $credentials = request(['username', 'password']);
         if (!$token = auth()->attempt($credentials)) {

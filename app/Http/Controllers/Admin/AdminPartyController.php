@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+/**
+ * Class AdminPartyController
+ *
+ * @package App\Http\Controllers\Admin
+ */
 class AdminPartyController extends Controller
 {
     /**
