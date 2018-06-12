@@ -1,5 +1,7 @@
 @extends('layouts.template')
 
+@section('nav_class', 'navbar-inverse')
+
 @section('nav')
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.home') }}">Home</a>
@@ -11,10 +13,10 @@
         <a class="nav-link" href="{{ route('admin.parties') }}">Parties</a>
     </li>
     <li class="nav-item" id="navAdmin">
-        <a class="nav-link" href="{{ route('home') }}">Site</a>
+        <a class="nav-link" href="{{ route('home') }}">Back to Site</a>
     </li>
     <li class="nav-item" id="navLogout">
-        <a class="nav-link" href="javascript:void(0)" onclick="logoutUser()">Logout</a>
+        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
     </li>
 @stop
 

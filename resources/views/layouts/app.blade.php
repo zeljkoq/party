@@ -1,5 +1,7 @@
 @extends('layouts.template')
 
+@section('nav_class', 'navbar-light')
+
 @section('nav')
     <li class="nav-item">
         <a class="nav-link" href="{{ route('home') }}">Home</a>
@@ -17,7 +19,7 @@
         <a class="nav-link" href="{{ route('admin.home') }}">Admin</a>
     </li>
     <li class="nav-item" id="navLogout">
-        <a class="nav-link" href="javascript:void(0)" onclick="logoutUser()">Logout</a>
+        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
     </li>
 @stop
 
@@ -41,8 +43,6 @@
 
 
 {{--
-exceptions
-read me
 postman
-role seeder
+data table
 --}}

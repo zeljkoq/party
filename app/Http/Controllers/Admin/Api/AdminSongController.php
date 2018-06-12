@@ -66,10 +66,10 @@ class AdminSongController extends Controller
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function update(UpdateSongRequest $request, $song_id)
+    public function update(UpdateSongRequest $request)
     {
         try {
-            $song = Song::findOrFail($song_id);
+            $song = Song::findOrFail($request->id);
             $song->name = $request->name;
             $song->author = $request->author;
             $song->link = $request->link;
@@ -93,17 +93,17 @@ class AdminSongController extends Controller
      */
     public function delete($song_id)
     {
-        try {
+//        try {
             $song = Song::findOrFail($song_id);
             $song->delete();
             return response([
                 'id' => $song_id,
                 'success' => 'You have been successfully deleted songs.'
             ]);
-        } catch (\Exception $e) {
-            return response([
-                'error' => 'Error! Please, try again.'
-            ]);
-        }
+//        } catch (\Exception $e) {
+//            return response([
+//                'error' => 'Error! Please, try again.'
+//            ]);
+//        }
     }
 }

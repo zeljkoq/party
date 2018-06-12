@@ -20,7 +20,6 @@ class AdminSongResource extends JsonResource
             'author' => $this->author,
             'link' => $this->link,
             'duration' => $this->duration,
-            'edit_link' => route('admin.songs.edit', ['song_id' => $this->id]),
             'delete_link' => route('admin.songs.delete', ['song_id' => $this->id])
         ];
     }

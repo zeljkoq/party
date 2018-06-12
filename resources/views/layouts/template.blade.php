@@ -24,7 +24,7 @@
 </head>
 <body>
 <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+    <nav class="navbar navbar-expand-md @yield('nav_class') navbar-laravel">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 Quantox
@@ -40,12 +40,12 @@
         @yield('content')
     </main>
 </div>
-<script src="{{ asset('js/function.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="{{ asset('js/bootstrap-datetimepicker.js') }}"></script>
+<script src="{{ asset('js/function.js') }}"></script>
 <script type="text/javascript">
     $(".date").datetimepicker({
         format: 'dd-mm-yyyy',

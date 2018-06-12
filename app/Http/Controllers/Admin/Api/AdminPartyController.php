@@ -23,7 +23,7 @@ class AdminPartyController extends Controller
     public function index()
     {
         return [
-            'parties' => AdminPartyResource::collection(Party::all()),
+            'data' => AdminPartyResource::collection(Party::all()),
             'tags' => TagResource::collection(Tag::all())
         ];
     }
@@ -43,7 +43,8 @@ class AdminPartyController extends Controller
             $party->capacity = $request->capacity;
             $party->description = $request->description;
             $party->cover_photo = $request->file('cover_photo')
-                ->storeAs('cover_photos', rand(11111, 99999) . "_" . $request->cover_photo->getClientOriginalName());
+                ->storeAs('public/cover_photos', rand(11111, 99999) . "_" . $request->cover_photo->getClientOriginalName());
+            $party->cover_photo = str_replace('public/', '', $party->cover_photo);
             $party->user_id = Auth()->user()->id;
             $party->save();
             $tags = $this->createTagsIfNotExists($request->tags);
@@ -75,29 +76,26 @@ class AdminPartyController extends Controller
     public function show($party_id)
     {
         return [
-            'parties' => new AdminPartyResource(Party::findOrFail($party_id)),
+            'data' => new AdminPartyResource(Party::findOrFail($party_id)),
             'tags' => TagResource::collection(Tag::all())
         ];
     }
 
     /**
      * @param UpdatePartyRequest $request
-     * @param int                $party_id
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function update(UpdatePartyRequest $request, $party_id)
+    public function update(UpdatePartyRequest $request)
     {
         try {
-            $party = Party::findOrFail($party_id);
+            $party = Party::findOrFail($request->id);
             $party->name = $request->name;
             $party->date = date('Y-m-d', strtotime($request->date));
             $party->duration = $request->duration;
             $party->capacity = $request->capacity;
             $party->description = $request->description;
             $party->save();
-            $tags = $this->createTagsIfNotExists($request->tags);
-            $party->tags()->sync($tags);
             return response([
                 'data' => new AdminPartyResource($party),
                 'success' => 'You have been successfully updated party.'
@@ -132,6 +130,9 @@ class AdminPartyController extends Controller
 
     public function createTagsIfNotExists($tags)
     {
+        if (!$tags) {
+            return [];
+        }
         foreach ($tags as $key => $tag) {
             if (!is_numeric($tag)) {
                 $newTag = new Tag;

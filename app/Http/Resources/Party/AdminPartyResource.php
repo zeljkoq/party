@@ -23,7 +23,6 @@ class AdminPartyResource extends JsonResource
             'description' => $this->description,
             'cover_photo' => $this->cover_photo,
             'tags' => $this->tags,
-            'edit_link' => route('admin.parties.edit', ['party_id' => $this->id]),
             'delete_link' => route('admin.parties.delete', ['party_id' => $this->id])
         ];
     }

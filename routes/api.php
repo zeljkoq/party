@@ -21,25 +21,25 @@ Route::middleware('jwt.auth')->group(function () {
         'middleware' => 'roles',
         'roles' => ['Admin', 'DJ']
     ]);
-    Route::post('admin/songs/store', [
+    Route::post('admin/songs', [
         'uses' => 'Admin\Api\AdminSongController@store',
         'as' => 'admin.songs.store',
         'middleware' => 'roles',
         'roles' => ['Admin', 'DJ']
     ]);
-    Route::get('admin/songs/show/{song_id}', [
+    Route::get('admin/songs/{song_id}', [
         'uses' => 'Admin\Api\AdminSongController@show',
         'as' => 'admin.songs.show',
         'middleware' => 'roles',
         'roles' => ['Admin', 'DJ']
     ]);
-    Route::put('admin/songs/update/{song_id}', [
+    Route::put('admin/songs', [
         'uses' => 'Admin\Api\AdminSongController@update',
         'as' => 'admin.songs.update',
         'middleware' => 'roles',
         'roles' => ['Admin', 'DJ']
     ]);
-    Route::delete('admin/songs/delete/{song_id}', [
+    Route::delete('admin/songs/{song_id}', [
         'uses' => 'Admin\Api\AdminSongController@delete',
         'as' => 'admin.songs.delete',
         'middleware' => 'roles',
@@ -52,25 +52,25 @@ Route::middleware('jwt.auth')->group(function () {
         'middleware' => 'roles',
         'roles' => ['Admin', 'Party Maker']
     ]);
-    Route::post('admin/parties/store', [
+    Route::post('admin/parties', [
         'uses' => 'Admin\Api\AdminPartyController@store',
         'as' => 'admin.parties.store',
         'middleware' => 'roles',
         'roles' => ['Admin', 'Party Maker']
     ]);
-    Route::get('admin/parties/show/{party_id}', [
+    Route::get('admin/parties/{party_id}', [
         'uses' => 'Admin\Api\AdminPartyController@show',
         'as' => 'admin.parties.show',
         'middleware' => 'roles',
         'roles' => ['Admin', 'Party Maker']
     ]);
-    Route::put('admin/parties/update/{party_id}', [
+    Route::put('admin/parties', [
         'uses' => 'Admin\Api\AdminPartyController@update',
         'as' => 'admin.parties.update',
         'middleware' => 'roles',
         'roles' => ['Admin', 'Party Maker']
     ]);
-    Route::delete('admin/parties/delete/{party_id}', [
+    Route::delete('admin/parties/{party_id}', [
         'uses' => 'Admin\Api\AdminPartyController@delete',
         'as' => 'admin.parties.delete',
         'middleware' => 'roles',

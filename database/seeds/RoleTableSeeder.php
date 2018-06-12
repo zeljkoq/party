@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 
 use App\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class RoleTableSeeder extends Seeder
 {
@@ -21,6 +22,11 @@ class RoleTableSeeder extends Seeder
         ]);
         Role::create([
             'name' => 'Party Maker',
+        ]);
+
+        DB::table('user_role')->insert([
+            'user_id' => 1,
+            'role_id' => 1
         ]);
     }
 }

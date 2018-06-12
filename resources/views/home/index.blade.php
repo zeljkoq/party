@@ -10,19 +10,9 @@
         </div>
     </div>
     <br>
-    <table id="dataTable">
-        <thead style="background-color: #ddd; font-weight: bold;">
-        <tr>
-            <td>Id</td>
-            <td>Name</td>
-            <td>Date</td>
-            <td>Duration</td>
-            <td>Capacity</td>
-            <td>Description</td>
-        </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-    </table>
+    <div id="parties">
+
+    </div>
     <br>
     <div class="row">
         <div class="col-md-6 text-center">
@@ -49,18 +39,19 @@
     <div id="map"></div>
 @stop
 @section('per_page_scripts')
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvXfffc-1y5IA31mA03cfgCvTICaUMTV4&callback=initMap"></script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvXfffc-1y5IA31mA03cfgCvTICaUMTV4&callback=initMap"></script>
     <script>
         $("#slideshow > div:gt(0)").hide();
 
-        setInterval(function() {
+        setInterval(function () {
             $('#slideshow > div:first')
                 .fadeOut(1000)
                 .next()
                 .fadeIn(1000)
                 .end()
                 .appendTo('#slideshow');
-        },  3000);
+        }, 3000);
     </script>
     <script>
         function initMap() {
@@ -71,42 +62,49 @@
         }
     </script>
     <script>
-        function fillTable(parties){
+        function fillTable(parties) {
             var html = '';
-            for (i=0;i<parties.length;i++){
-                html += '<tr>';
-                html += '<td>' + parties[i].id + '</td>';
-                html += '<td>' + parties[i].name + '</td>';
-                html += '<td>' + parties[i].date + '</td>';
-                html += '<td>' + parties[i].duration + '</td>';
-                html += '<td>' + parties[i].capacity + '</td>';
-                html += '<td>' + parties[i].description + '</td>';
-                html += '</tr>';
+            for (i = 0; i < parties.length; i++) {
+                var index = i;
+                if (i == 0 || ((i / 3) % 1) == 0) {
+                    html += '<div class="row">';
+                }
+
+                html += '<div class="col-md-4">';
+                html += '<div class="thumbnail">';
+                html += '<img src="/storage/'+parties[index].cover_photo+'">';
+                html += '<div class="caption">';
+                html += '<h3>' + parties[index].name + '</h3>';
+                html += '<p>';
+                html += 'Date: ' + parties[index].date + '<br>';
+                html += 'Duration: ' + parties[index].duration + '<br>';
+                html += 'Capacity: ' + parties[index].capacity + '<br>';
+                html += '</p>';
+                html += '<p><a href="#" class="btn btn-primary" role="button">Show More</a></p>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+
+                if ((((i + 1) / 3) % 1) == 0 || i == parties.length - 1) {
+                    html += '</div>';
+                }
             }
             return html;
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $.ajax({
                 url: '{{ route('home.index') }}',
                 headers: {
-                    "Authorization":getFromStorage('Authorization')
+                    "Authorization": getFromStorage('Authorization')
                 },
                 success: function (data) {
-                    html = fillTable(data.data);
-                    $('#tableBody').html(html);
-                    $('#dataTable').each(function() {
-                        dt = $(this).dataTable();
-                        dt.fnDraw();
-                    });
-                },
-                error: function (data) {
-                    $('#dataTable').dataTable();
+                    $('#parties').html(fillTable(data.data));
                 }
             });
         });
 
-        $('#sendMail').on('click', function(){
+        $('#sendMail').on('click', function () {
             var name = $('#name').val();
             var email = $('#email').val();
             var message = $('#message').val();
@@ -116,7 +114,7 @@
                 url: '{{ route('send_mail') }}',
                 type: 'POST',
                 data: ({name: name, email: email, message: message}),
-                success: function(data) {
+                success: function (data) {
                     if (typeof data.success !== 'undefined') {
                         $('#success').text(data.success);
                         $('#success').css('display', 'block');

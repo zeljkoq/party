@@ -27,7 +27,7 @@ class CreateSongRequest extends FormRequest
             'name' => 'required|min:4|max:20',
             'author' => 'required|min:5|max:20',
             'link' => 'required|min:5|max:100',
-            'duration' => 'required'
+            'duration' => 'required|between:0,99.99'
         ];
     }
 }
