@@ -67,7 +67,7 @@ class AdminSongController extends Controller
      */
     public function update(UpdateSongRequest $request)
     {
-//        try {
+        try {
             $song = Song::findOrFail($request->id);
             $song->name = $request->name;
             $song->author = $request->author;
@@ -78,11 +78,11 @@ class AdminSongController extends Controller
                 'data' => new AdminSongResource($song),
                 'success' => 'You have been successfully updated song.'
             ]);
-//        } catch (\Exception $e) {
-//            return response([
-//                'error' => 'Error! Please, try again.'
-//            ]);
-//        }
+        } catch (\Exception $e) {
+            return response([
+                'error' => 'Error! Please, try again.'
+            ]);
+        }
     }
 
     /**
