@@ -62,13 +62,12 @@ class AdminSongController extends Controller
 
     /**
      * @param UpdateSongRequest $request
-     * @param int               $song_id
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function update(UpdateSongRequest $request)
     {
-        try {
+//        try {
             $song = Song::findOrFail($request->id);
             $song->name = $request->name;
             $song->author = $request->author;
@@ -79,11 +78,11 @@ class AdminSongController extends Controller
                 'data' => new AdminSongResource($song),
                 'success' => 'You have been successfully updated song.'
             ]);
-        } catch (\Exception $e) {
-            return response([
-                'error' => 'Error! Please, try again.'
-            ]);
-        }
+//        } catch (\Exception $e) {
+//            return response([
+//                'error' => 'Error! Please, try again.'
+//            ]);
+//        }
     }
 
     /**

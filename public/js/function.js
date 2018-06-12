@@ -52,10 +52,7 @@ var crud = {
         for (i = 0; i < crud.modelArr.length; i++) {
             $('#tableBody').append(crud.createTr(crud.modelArr[i], i));
         }
-        // $('#dataTable').each(function() {
-        //     dt = $(this).dataTable();
-        //     dt.fnDraw();
-        // });
+        $('#dataTable').dataTable()
     },
 
     createTr: function (model, index) {
