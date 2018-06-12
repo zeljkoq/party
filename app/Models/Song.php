@@ -18,4 +18,12 @@ class Song extends Model
             'link',
             'duration',
         ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function parties()
+    {
+        return $this->belongsToMany('App\Models\Party', 'song_party');
+    }
 }

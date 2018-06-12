@@ -17,7 +17,7 @@ class CreatePartiesTable extends Migration
             $table->increments('id');
             $table->string('name', 20);
             $table->date('date');
-            $table->integer('duration');
+            $table->float('duration', 11, 2);
             $table->integer('capacity');
             $table->text('description')->nullable();
             $table->string('cover_photo', 100);

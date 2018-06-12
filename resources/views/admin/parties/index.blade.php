@@ -17,7 +17,7 @@
                 <p id="dateMess" style="display: none"></p><br><br>
             </div>
             <div class="form-group">
-                <label>Duration (minutes)</label>
+                <label>Duration (hours)</label>
                 <input type="text" name="duration" id="duration"/>
                 <p id="durationMess" style="display: none"></p><br><br>
             </div>
@@ -98,7 +98,7 @@
             html += '<td>' + model.id + '</td>';
             html += '<td>' + model.name + '</td>';
             html += '<td>' + model.date + '</td>';
-            html += '<td>' + model.duration + ' minute/s</td>';
+            html += '<td>' + model.duration + ' hour/s</td>';
             html += '<td>' + model.capacity + ' persons</td>';
             html += '<td>' + model.description + '</td>';
             html += '<td><a href="javascript:void(0)" onclick="crud.fillEditForm(' + index + ')">edit</a></td>';

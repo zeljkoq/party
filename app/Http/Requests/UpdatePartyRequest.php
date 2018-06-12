@@ -26,7 +26,7 @@ class UpdatePartyRequest extends FormRequest
         return [
             'name' => 'required|min:4|max:20',
             'date' => 'required',
-            'duration' => 'required|integer',
+            'duration' => 'required|between:0,99.99',
             'capacity' => 'required|integer',
             'description' => 'nullable|min:10',
             'cover_photo' => 'file',
