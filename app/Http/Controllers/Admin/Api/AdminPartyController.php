@@ -60,50 +60,23 @@ class AdminPartyController extends Controller
             }
             $party->tags()->attach($tags);
 
-            $pastParties = Party::where('date', '<', $party->date)->get();
-            $lastParty = null;
-            foreach ($pastParties as $pastParty) {
-                if ($lastParty == null) {
-                    $lastParty = $pastParty;
-                    continue;
-                }
+            $lastParty = $this->getLastParty($party);
 
-                if ($pastParty->date < $lastParty->date) {
-                    continue;
-                }
-
-                if ($pastParty->date == $lastParty->date) {
-                    if ($pastParty->id < $lastParty->id) {
-                        continue;
-                    }
-                }
-                $lastParty = $pastParty;
-            }
-            $previousSongs = [];
-            if ($lastParty) {
-                foreach ($lastParty->songs as $key => $song) {
-                    $previousSongs[$key] = $song->id;
-                }
-            }
+            $previousSongs = $this->getSongsFromLastParty($lastParty);
 
             $durationInMinutes = $request->duration * 60;
+
             $songs = Song::all()->toArray();
             shuffle($songs);
+
             $songsArr = [];
             foreach ($songs as $key => $song) {
-                if (count($songsArr) > 0) {
-                    $lastSong = end($songsArr);
-                    if (in_array($lastSong, $previousSongs)) {
-                        $previousKey = array_search($lastSong, $previousSongs);
-                        if (isset($previousSongs[$previousKey+1]) && $previousSongs[$previousKey+1] == $song['id']) {
-                            continue;
-                        }
-                        if (isset($previousSongs[$previousKey-1]) && $previousSongs[$previousKey-1] == $song['id']) {
-                            continue;
-                        }
-                    }
+                $repetition = $this->checkSongRepetition($songsArr, $previousSongs);
 
+                if ($repetition) {
+                    continue;
                 }
+
                 if ($song['duration'] > $durationInMinutes) {
                     $songsArr[$key] = $song['id'];
                     break;
@@ -111,6 +84,7 @@ class AdminPartyController extends Controller
                 $songsArr[$key] = $song['id'];
                 $durationInMinutes -= $song['duration'];
             }
+
             if ($durationInMinutes > 0) {
                 foreach ($songs as $key => $song) {
                     if ($song['duration'] > $durationInMinutes) {
@@ -121,6 +95,7 @@ class AdminPartyController extends Controller
                     $durationInMinutes -= $song['duration'];
                 }
             }
+
             $party->songs()->attach($songsArr);
 
             return response([
@@ -194,6 +169,11 @@ class AdminPartyController extends Controller
         }
     }
 
+    /**
+     * @param array $tags
+     *
+     * @return array
+     */
     public function createTagsIfNotExists($tags)
     {
         if (!$tags) {
@@ -208,5 +188,72 @@ class AdminPartyController extends Controller
             }
         }
         return $tags;
+    }
+
+    /**
+     * @param object $party
+     *
+     * @return null|object
+     */
+    public function getLastParty($party)
+    {
+        $pastParties = Party::where('date', '<', $party->date)->get();
+        $lastParty = null;
+        foreach ($pastParties as $pastParty) {
+            if ($lastParty == null) {
+                $lastParty = $pastParty;
+                continue;
+            }
+
+            if ($pastParty->date < $lastParty->date) {
+                continue;
+            }
+
+            if ($pastParty->date == $lastParty->date) {
+                if ($pastParty->id < $lastParty->id) {
+                    continue;
+                }
+            }
+            $lastParty = $pastParty;
+        }
+        return $lastParty;
+    }
+
+    /**
+     * @param object $lastParty
+     *
+     * @return array
+     */
+    public function getSongsFromLastParty($lastParty)
+    {
+        $previousSongs = [];
+        if ($lastParty) {
+            foreach ($lastParty->songs as $key => $song) {
+                $previousSongs[$key] = $song->id;
+            }
+        }
+        return $previousSongs;
+    }
+
+    /**
+     * @param array $songsArr
+     * @param array $previousSongs
+     *
+     * @return bool
+     */
+    public function checkSongRepetition($songsArr, $previousSongs)
+    {
+        if (count($songsArr) > 0) {
+            $lastSong = end($songsArr);
+            if (in_array($lastSong, $previousSongs)) {
+                $previousKey = array_search($lastSong, $previousSongs);
+                if (isset($previousSongs[$previousKey+1]) && $previousSongs[$previousKey+1] == $song['id']) {
+                    return true;
+                }
+                if (isset($previousSongs[$previousKey-1]) && $previousSongs[$previousKey-1] == $song['id']) {
+                    return true;
+                }
+            }
+        }
     }
 }

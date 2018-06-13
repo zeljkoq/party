@@ -92,17 +92,17 @@ class AdminSongController extends Controller
      */
     public function delete($song_id)
     {
-//        try {
+        try {
             $song = Song::findOrFail($song_id);
             $song->delete();
             return response([
                 'id' => $song_id,
                 'success' => 'You have been successfully deleted songs.'
             ]);
-//        } catch (\Exception $e) {
-//            return response([
-//                'error' => 'Error! Please, try again.'
-//            ]);
-//        }
+        } catch (\Exception $e) {
+            return response([
+                'error' => 'Error! Please, try again.'
+            ]);
+        }
     }
 }
