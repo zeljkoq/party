@@ -125,6 +125,6 @@ class User extends Authenticatable implements JWTSubject
      */
     public function songs()
     {
-        return $this->belongsToMany('App\Models\Song', 'user_song');
+        return $this->belongsToMany('App\Models\Song', 'user_song')->withPivot('party_id');
     }
 }

@@ -8,6 +8,8 @@ Route::post('sendMail', 'HomeController@sendMail')->name('send_mail');
 
 Route::get('songs', 'SongController@index')->name('songs');
 
+Route::get('parties', 'PartyController@index')->name('parties');
+
 Route::get('admin/home', 'Admin\AdminHomeController@index')->name('admin.home');
 
 Route::get('admin/songs', 'Admin\AdminSongController@index')->name('admin.songs');

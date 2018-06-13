@@ -18,6 +18,10 @@ Route::middleware('jwt.auth')->group(function () {
         'uses' => 'Api\PartyController@singOut',
         'as' => 'parties.sing.out',
     ]);
+    Route::get('parties', [
+        'uses' => 'Api\PartyController@index',
+        'as' => 'parties.index',
+    ]);
 
     Route::get('songs', [
         'uses' => 'Api\SongController@index',

@@ -17,6 +17,7 @@ class CreateUserSongTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('song_id');
+            $table->unsignedInteger('party_id');
             $table->timestamps();
         });
     }

@@ -9,6 +9,9 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('songs') }}">Songs</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('parties') }}">My Parties</a>
+    </li>
     <li class="nav-item" id="navLogin">
         <a class="nav-link" href="{{ route('loginForm') }}">Login</a>
     </li>
@@ -39,3 +42,7 @@
         }
     </script>
 @stop
+
+{{--postman--}}
+{{--party details--}}
+{{--party songs--}}

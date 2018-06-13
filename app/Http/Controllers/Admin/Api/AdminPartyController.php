@@ -195,12 +195,12 @@ class AdminPartyController extends Controller
                 $assigned = false;
                 foreach ($registeredUsers as $user) {
                     if (isset($oldArtists[$song->id]) && !in_array($user, $oldArtists[$song->id])) {
-                        $song->users()->attach($user);
+                        $song->users()->attach($user, ['party_id' => $party->id]);
                         $assigned = true;
                     }
                 }
                 if (!$assigned) {
-                    $song->users()->attach([1]);
+                    $song->users()->attach(1, ['party_id' => $party->id]);
                 }
             }
             return response([
@@ -221,6 +221,7 @@ class AdminPartyController extends Controller
     public function details($party_id)
     {
         $party = Party::find($party_id);
+        dd($party->songs->users);
         $details = [];
         foreach ($party->songs as $key => $song) {
             $details[$key] = new \stdClass();
