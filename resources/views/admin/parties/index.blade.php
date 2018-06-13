@@ -49,6 +49,7 @@
 
             <button type="button" id="submitAdd">Create Song</button>
             <button type="button" id="submitEdit" style="display: none;">Edit Song</button>
+            <button type="button" id="cancelEdit" style="display: none;" onclick="crud.emptyEditForm()">Cancel</button>
         </form>
     </div>
     <div class="box">
@@ -82,7 +83,11 @@
         }
 
         var fields = [
-            'id', 'name', 'date', 'duration', 'capacity', 'description', 'tags', 'coverPhoto'
+            'id', 'name', 'date', 'duration', 'capacity', 'description'
+        ];
+
+        var allFormFields = [
+            'name', 'date', 'duration', 'capacity', 'description', 'tags', 'cover_photo'
         ];
 
         var links = {
@@ -123,5 +128,12 @@
             }
             return html;
         }
+
+        $(document).ready(function () {
+            if (!checkInStorage("Authorization")) {
+                return false;
+            }
+            crud.getAll();
+        });
     </script>
 @stop

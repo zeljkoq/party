@@ -52,7 +52,14 @@ var crud = {
         for (i = 0; i < crud.modelArr.length; i++) {
             $('#tableBody').append(crud.createTr(crud.modelArr[i], i));
         }
-        $('#dataTable').dataTable()
+        $('#dataTable').dataTable();
+        crud.resetForm();
+    },
+
+    resetForm: function () {
+        for (i = 0; i < allFormFields.length; i++) {
+            $('#' + allFormFields[i]).val('').change();
+        }
     },
 
     createTr: function (model, index) {
@@ -134,9 +141,24 @@ var crud = {
         $('#editIndex').val(index);
         $('#submitAdd').css('display', 'none');
         $('#submitEdit').css('display', 'block');
+        $('#cancelEdit').css('display', 'block');
         if (hideElements.length > 0) {
             for (i = 0; i < hideElements.length; i++) {
                 $('#' + hideElements[i]).parent().css('display', 'none');
+            }
+        }
+    },
+
+    emptyEditForm: function () {
+        for (i = 0; i < fields.length; i++) {
+            $('#' + fields[i]).val('');
+        }
+        $('#submitAdd').css('display', 'block');
+        $('#submitEdit').css('display', 'none');
+        $('#cancelEdit').css('display', 'none');
+        if (hideElements.length > 0) {
+            for (i = 0; i < hideElements.length; i++) {
+                $('#' + hideElements[i]).parent().css('display', 'block');
             }
         }
     },
@@ -185,13 +207,6 @@ var crud = {
         })
     }
 };
-
-$(document).ready(function () {
-    if (!checkInStorage("Authorization")) {
-        return false;
-    }
-    crud.getAll();
-});
 
 $('#submitAdd').on('click', function () {
     hideMessages(getElementsForMessages());

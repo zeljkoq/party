@@ -72,7 +72,7 @@
 
                 html += '<div class="col-md-4">';
                 html += '<div class="thumbnail">';
-                html += '<img src="/storage/'+parties[index].cover_photo+'">';
+                html += '<img src="/storage/' + parties[index].cover_photo + '">';
                 html += '<div class="caption">';
                 html += '<h3>' + parties[index].name + '</h3>';
                 html += '<p>';
@@ -92,17 +92,19 @@
             return html;
         }
 
-        $(document).ready(function () {
-            $.ajax({
-                url: '{{ route('home.index') }}',
-                headers: {
-                    "Authorization": getFromStorage('Authorization')
-                },
-                success: function (data) {
-                    $('#parties').html(fillTable(data.data));
-                }
+        if (checkInStorage('Authorization')) {
+            $(document).ready(function () {
+                $.ajax({
+                    url: '{{ route('home.index') }}',
+                    headers: {
+                        "Authorization": getFromStorage('Authorization')
+                    },
+                    success: function (data) {
+                        $('#parties').html(fillTable(data.data));
+                    }
+                });
             });
-        });
+        }
 
         $('#sendMail').on('click', function () {
             var name = $('#name').val();

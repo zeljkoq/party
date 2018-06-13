@@ -13,7 +13,7 @@
 
                             <div class="col-md-6">
                                 <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required>
-                                <p id="usernameError"></p>
+                                <p id="usernameMess"></p>
                             </div>
                         </div>
 
@@ -22,7 +22,7 @@
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-                                <p id="passwordError"></p>
+                                <p id="passwordMess"></p>
                             </div>
                         </div>
 
@@ -31,7 +31,7 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                                <p id="passwordConfirmError"></p>
+                                <p id="passwordConfirmMess"></p>
                             </div>
                         </div>
 
@@ -61,7 +61,7 @@
     <script>
         function getElementsForMessages(){
             return [
-                'error', 'success', 'username', 'password', 'passwordConfirm'
+                'username', 'password', 'passwordConfirm'
             ]
         }
 

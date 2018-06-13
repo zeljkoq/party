@@ -37,6 +37,5 @@
             $('#navLogout').css('display', 'none')
             $('#navAdmin').css('display', 'none')
         }
-        console.log(getFromStorage('Authorization'))
     </script>
 @stop

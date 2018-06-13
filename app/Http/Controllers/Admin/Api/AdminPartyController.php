@@ -86,7 +86,7 @@ class AdminPartyController extends Controller
                 }
             }
 
-            $durationInMinutes = $request->duration;
+            $durationInMinutes = $request->duration * 60;
             $songs = Song::all()->toArray();
             shuffle($songs);
             $songsArr = [];

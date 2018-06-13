@@ -28,6 +28,7 @@
 
             <button type="button" id="submitAdd">Create Song</button>
             <button type="button" id="submitEdit" style="display: none;">Edit Song</button>
+            <button type="button" id="cancelEdit" style="display: none;" onclick="crud.emptyEditForm()">Cancel</button>
         </form>
     </div>
     <div class="box">
@@ -60,7 +61,11 @@
         }
 
         var fields = [
-            'id', 'name', 'author', 'link', 'duration'
+            'id', 'name', 'author', 'link', 'duration', 'tags', 'cover_photo'
+        ];
+
+        var allFormFields = [
+            'name', 'author', 'link', 'duration', 'tags', 'cover_photo'
         ];
 
         var links = {
@@ -91,5 +96,12 @@
         var formFiles = [];
 
         var hideElements = [];
+
+        $(document).ready(function () {
+            if (!checkInStorage("Authorization")) {
+                return false;
+            }
+            crud.getAll();
+        });
     </script>
 @stop
