@@ -23,9 +23,12 @@ class RoleTableSeeder extends Seeder
         Role::create([
             'name' => 'Party Maker',
         ]);
+        Role::create([
+            'name' => 'Normal User',
+        ]);
 
         DB::table('user_role')->insert([
-            'user_id' => 1,
+            'user_id' => 2,
             'role_id' => 1
         ]);
     }

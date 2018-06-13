@@ -14,6 +14,12 @@ class PartyResource extends JsonResource
      */
     public function toArray($request)
     {
+        $registered = false;
+        foreach ($this->users as $user) {
+            if ($user->id == Auth()->user()->id) {
+                $registered = true;
+            }
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -21,7 +27,10 @@ class PartyResource extends JsonResource
             'duration' => $this->duration,
             'capacity' => $this->capacity,
             'description' => $this->description,
-            'cover_photo' => $this->cover_photo
+            'cover_photo' => $this->cover_photo,
+            'registered' => $registered,
+            'sing_up_link' => route('parties.sing.up', ['party_id' => $this->id]),
+            'sing_out_link' => route('parties.sing.out', ['party_id' => $this->id])
         ];
     }
 }

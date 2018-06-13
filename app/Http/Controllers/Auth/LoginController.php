@@ -18,12 +18,4 @@ class LoginController extends Controller
     {
         return view('auth.login');
     }
-
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function logout()
-    {
-        return view('auth.logout');
-    }
 }

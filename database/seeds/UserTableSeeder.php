@@ -14,6 +14,10 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         User::create([
+            'username' => 'quantoxBend',
+            'password' => bcrypt('kompjuter')
+        ]);
+        User::create([
             'username' => 'kuzmic',
             'password' => bcrypt('kompjuter')
         ]);

@@ -15,10 +15,8 @@ class CreateSongPartyTable extends Migration
     {
         Schema::create('song_party', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('song_id')->unsigned();
-            $table->foreign('song_id')->references('id')->on('parties')->onDelete('cascade');
-            $table->integer('party_id')->unsigned();
-            $table->foreign('party_id')->references('id')->on('songs')->onDelete('cascade');
+            $table->unsignedInteger('song_id');
+            $table->unsignedInteger('party_id');
             $table->timestamps();
         });
     }

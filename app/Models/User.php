@@ -111,4 +111,20 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasRole('DJ') ? true : false;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function parties()
+    {
+        return $this->belongsToMany('App\Models\Party', 'user_party');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function songs()
+    {
+        return $this->belongsToMany('App\Models\Song', 'user_song');
+    }
 }

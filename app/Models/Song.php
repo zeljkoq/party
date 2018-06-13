@@ -26,4 +26,12 @@ class Song extends Model
     {
         return $this->belongsToMany('App\Models\Party', 'song_party');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\Models\User', 'user_song');
+    }
 }

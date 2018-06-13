@@ -16,7 +16,7 @@
         <a class="nav-link" href="{{ route('home') }}">Back to Site</a>
     </li>
     <li class="nav-item" id="navLogout">
-        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
+        <a class="nav-link" href="javascript:void(0)" onclick="logoutUser()">Logout</a>
     </li>
 @stop
 

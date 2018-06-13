@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Api;
 use App\Http\Requests\CreatePartyRequest;
 use App\Http\Requests\UpdatePartyRequest;
 use App\Http\Resources\Party\AdminPartyResource;
-use App\Http\Resources\Song\SongResource;
 use App\Http\Resources\Tag\TagResource;
 use App\Models\Party;
 use App\Models\Song;
@@ -24,8 +23,12 @@ class AdminPartyController extends Controller
      */
     public function index()
     {
+        $data = AdminPartyResource::collection(Party::where('user_id', Auth()->user()->id)->get());
+        if (Auth()->user()->isAdmin()) {
+            $data = AdminPartyResource::collection(Party::all());
+        }
         return [
-            'data' => AdminPartyResource::collection(Party::all()),
+            'data' => $data,
             'tags' => TagResource::collection(Tag::all())
         ];
     }
@@ -71,7 +74,7 @@ class AdminPartyController extends Controller
 
             $songsArr = [];
             foreach ($songs as $key => $song) {
-                $repetition = $this->checkSongRepetition($songsArr, $previousSongs);
+                $repetition = $this->checkSongRepetition($songsArr, $previousSongs, $song);
 
                 if ($repetition) {
                     continue;
@@ -170,6 +173,67 @@ class AdminPartyController extends Controller
     }
 
     /**
+     * @param int $party_id
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function start($party_id)
+    {
+        try {
+            $party = Party::find($party_id);
+            $party->start = 1;
+            $party->save();
+
+            $lastParties = Party::where('start', 1)->get();
+
+            $oldArtists = $this->getOldArtist($lastParties);
+
+            $registeredUsers = $this->getIdsOfRegisteredUSers($party);
+
+
+            foreach ($party->songs as $song) {
+                $assigned = false;
+                foreach ($registeredUsers as $user) {
+                    if (isset($oldArtists[$song->id]) && !in_array($user, $oldArtists[$song->id])) {
+                        $song->users()->attach($user);
+                        $assigned = true;
+                    }
+                }
+                if (!$assigned) {
+                    $song->users()->attach([1]);
+                }
+            }
+            return response([
+                'success' => 'You have been successfully started party.'
+            ]);
+        } catch (\Exception $e) {
+            return response([
+                'error' => 'Error! Please, try again.'
+            ]);
+        }
+    }
+
+    /**
+     * @param int $party_id
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function details($party_id)
+    {
+        $party = Party::find($party_id);
+        $details = [];
+        foreach ($party->songs as $key => $song) {
+            $details[$key] = new \stdClass();
+            $details[$key]->name = $song->name;
+            $details[$key]->author = $song->author;
+            $details[$key]->link = $song->link;
+            $details[$key]->duration = $song->duration;
+            $details[$key]->username = $song->users[0]->username;
+        }
+        return response($details);
+    }
+
+    /**
      * @param array $tags
      *
      * @return array
@@ -241,7 +305,7 @@ class AdminPartyController extends Controller
      *
      * @return bool
      */
-    public function checkSongRepetition($songsArr, $previousSongs)
+    public function checkSongRepetition($songsArr, $previousSongs, $song)
     {
         if (count($songsArr) > 0) {
             $lastSong = end($songsArr);
@@ -255,5 +319,34 @@ class AdminPartyController extends Controller
                 }
             }
         }
+    }
+
+    /**
+     * @param $lastParties
+     *
+     * @return array
+     */
+    public function getOldArtist($lastParties)
+    {
+        $oldArtists = [];
+        if ($lastParties) {
+            foreach ($lastParties as $lastParty) {
+                foreach ($lastParty->songs as $song) {
+                    foreach ($song->users as $k => $user) {
+                        $oldArtists[$song->id][$k] = $user->id;
+                    }
+                }
+            }
+        }
+        return $oldArtists;
+    }
+
+    public function getIdsOfRegisteredUSers($party)
+    {
+        $registeredUsers = [];
+        foreach ($party->users as $k => $user) {
+            $registeredUsers[$k] = $user->id;
+        }
+        return $registeredUsers;
     }
 }

@@ -6,8 +6,8 @@
         <div class="col-md-8">
             <div class="card">
                 <h3>Login</h3>
-                <div class="alert alert-danger" id="error" style="display: none"></div>
-                <div class="alert alert-success" id="success" style="display: none"></div>
+                <div class="alert alert-danger" id="errorMess" style="display: none"></div>
+                <div class="alert alert-success" id="successMess" style="display: none"></div>
                 <div class="card-body">
                     <form>
                         <div class="form-group row">

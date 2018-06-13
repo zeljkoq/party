@@ -63,6 +63,8 @@
                 <td>Duration</td>
                 <td>Capacity</td>
                 <td>Description</td>
+                <td>Start</td>
+                <td>Details</td>
                 <td>Edit</td>
                 <td>Delete</td>
             </tr>
@@ -73,6 +75,7 @@
     </div>
     @include('layouts._unauthorize_modal')
     @include('layouts._confirmation_modal')
+    @include('layouts._details_modal')
 @stop
 @section('per_page_scripts')
     <script>
@@ -105,7 +108,21 @@
             html += '<td>' + model.date + '</td>';
             html += '<td>' + model.duration + ' hour/s</td>';
             html += '<td>' + model.capacity + ' persons</td>';
-            html += '<td>' + model.description + '</td>';
+            html += '<td>';
+            if (model.description) {
+                html += model.description;
+            }
+            html += '</td>';
+            html += '<td>';
+            if (!model.start) {
+                html += '<a id="start" href="javascript:void(0)" onclick="confModal(\'Are you sure you want to start this party?\', \'Start\', \'' + model.start_link + '\')">start</a>';
+            }
+            html += '</td>';
+            html += '<td>';
+            if (model.start) {
+                html += '<a href="javascript:void(0)" onclick="details(\'' + model.details_link + '\')">details</a>';
+            }
+            html += '</td>';
             html += '<td><a href="javascript:void(0)" onclick="crud.fillEditForm(' + index + ')">edit</a></td>';
             html += '<td><a href="javascript:void(0)" onclick="deleteModal(\'Are you sure you want to delete this party?\', \'Delete\', \'' + model.delete_link + '\')">delete</a></td>';
             html += '</tr>';
@@ -135,5 +152,60 @@
             }
             crud.getAll();
         });
+
+        function confModal(message, button, url) {
+            $('#conf-message').text(message);
+            $('#button').text(button);
+            $('#confirmationModal').css('display', 'block');
+            $('#button').attr('onclick', 'startParty(\'' + url + '\')');
+        }
+
+        function startParty(url) {
+            $('#confirmationModal').css('display', 'none');
+            $('#successMess').css('display', 'none');
+            $('#errorMess').css('display', 'none');
+            $.ajax({
+                url: url,
+                headers: {
+                    "Authorization": getFromStorage('Authorization')
+                },
+                type: 'GET',
+                success: function (data) {
+                    if (typeof data.success !== 'undefined') {
+                        $('#success').text(data.success);
+                        $('#success').css('display', 'block');
+                        $('#start').css('display', 'none');
+                    }
+                    if (typeof data.error !== 'undefined') {
+                        $('#errorMess').text(data.error);
+                        $('#errorMess').css('display', 'block');
+                    }
+                }
+            });
+        }
+
+        function details(url) {
+            $.ajax({
+                url: url,
+                headers: {
+                    "Authorization": getFromStorage('Authorization')
+                },
+                type: 'GET',
+                success: function (data) {
+                    var html = '';
+                    for (i = 0;i < data.length; i++) {
+                        html += '<tr>';
+                        html += '<td>' + data[i].name + '</td>';
+                        html += '<td>' + data[i].author + '</td>';
+                        html += '<td>' + data[i].link + '</td>';
+                        html += '<td>' + data[i].duration + '</td>';
+                        html += '<td>' + data[i].username + '</td>';
+                        html += '</tr>';
+                    }
+                    $('#detailsModal').css('display', 'block');
+                    $('#detailsBody').html(html);
+                }
+            });
+        }
     </script>
 @stop

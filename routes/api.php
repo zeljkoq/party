@@ -10,6 +10,15 @@ Route::middleware('jwt.auth')->group(function () {
         'as' => 'home.index',
     ]);
 
+    Route::get('parties/singUp/{party_id}', [
+        'uses' => 'Api\PartyController@singUp',
+        'as' => 'parties.sing.up',
+    ]);
+    Route::get('parties/singOut/{party_id}', [
+        'uses' => 'Api\PartyController@singOut',
+        'as' => 'parties.sing.out',
+    ]);
+
     Route::get('songs', [
         'uses' => 'Api\SongController@index',
         'as' => 'songs.index',
@@ -73,6 +82,20 @@ Route::middleware('jwt.auth')->group(function () {
     Route::delete('admin/parties/{party_id}', [
         'uses' => 'Admin\Api\AdminPartyController@delete',
         'as' => 'admin.parties.delete',
+        'middleware' => 'roles',
+        'roles' => ['Admin', 'Party Maker']
+    ]);
+
+    Route::get('admin/parties/start/{party_id}', [
+        'uses' => 'Admin\Api\AdminPartyController@start',
+        'as' => 'admin.parties.start',
+        'middleware' => 'roles',
+        'roles' => ['Admin', 'Party Maker']
+    ]);
+
+    Route::get('admin/parties/details/{party_id}', [
+        'uses' => 'Admin\Api\AdminPartyController@details',
+        'as' => 'admin.parties.details',
         'middleware' => 'roles',
         'roles' => ['Admin', 'Party Maker']
     ]);

@@ -19,7 +19,7 @@
         <a class="nav-link" href="{{ route('admin.home') }}">Admin</a>
     </li>
     <li class="nav-item" id="navLogout">
-        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
+        <a class="nav-link" href="javascript:void(0)" onclick="logoutUser()">Logout</a>
     </li>
 @stop
 

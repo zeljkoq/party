@@ -10,6 +10,7 @@
         </div>
     </div>
     <br>
+    <div class="alert alert-danger" id="errorMess" style="display: none"></div>
     <div id="parties">
 
     </div>
@@ -37,6 +38,7 @@
 
 
     <div id="map"></div>
+    @include('layouts._confirmation_modal')
 @stop
 @section('per_page_scripts')
     <script async defer
@@ -65,22 +67,33 @@
         function fillTable(parties) {
             var html = '';
             for (i = 0; i < parties.length; i++) {
-                var index = i;
                 if (i == 0 || ((i / 3) % 1) == 0) {
                     html += '<div class="row">';
                 }
 
                 html += '<div class="col-md-4">';
                 html += '<div class="thumbnail">';
-                html += '<img src="/storage/' + parties[index].cover_photo + '">';
+                if(parties[i].registered) {
+                    html += '<div id="registered" class="alert alert-success" style="color:green">You are registered on this party</div>';
+                } else {
+                    html += '<div id="registered" class="alert alert-success" style="color:green;display:none">You are registered on this party</div>';
+                }
+                html += '<img src="/storage/' + parties[i].cover_photo + '">';
                 html += '<div class="caption">';
-                html += '<h3>' + parties[index].name + '</h3>';
+                html += '<h3>' + parties[i].name + '</h3>';
                 html += '<p>';
-                html += 'Date: ' + parties[index].date + '<br>';
-                html += 'Duration: ' + parties[index].duration + '<br>';
-                html += 'Capacity: ' + parties[index].capacity + '<br>';
+                html += 'Date: ' + parties[i].date + '<br>';
+                html += 'Duration: ' + parties[i].duration + '<br>';
+                html += 'Capacity: ' + parties[i].capacity + '<br>';
                 html += '</p>';
-                html += '<p><a href="#" class="btn btn-primary" role="button">Show More</a></p>';
+                if(parties[i].registered) {
+                    html += '<p><button id="singOut" onclick="confModal(\'Are you sure you want to sing out from this party?\', \'Sing out\', \'' + parties[i].sing_out_link + '\')" class="btn btn-primary">Sing out</button>';
+                    html += '<p><button id="singUp" onclick="confModal(\'Are you sure you want to sing up for this party?\', \'Sing up\', \'' + parties[i].sing_up_link + '\')" class="btn btn-primary" style="display: none">Sing up</button>';
+                }else {
+                    html += '<p><button id="singUp" onclick="confModal(\'Are you sure you want to sing up for this party?\', \'Sing up\', \'' + parties[i].sing_up_link + '\')" class="btn btn-primary" role="button">Sing up</button>';
+                    html += '<p><button id="singOut" onclick="confModal(\'Are you sure you want to sing out from this party?\', \'Sing out\', \'' + parties[i].sing_out_link + '\')" class="btn btn-primary" style="display: none">Sing out</button>';
+                }
+                html += '</p>';
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
@@ -128,5 +141,42 @@
                 }
             });
         });
+
+        function confModal(message, button, url) {
+            $('#conf-message').text(message);
+            $('#button').text(button);
+            $('#confirmationModal').css('display', 'block');
+            $('#button').attr('onclick', 'singUp(\'' + url + '\')');
+        }
+
+        function singUp(url) {
+            $('#confirmationModal').css('display', 'none');
+            $('#successMess').css('display', 'none');
+            $('#errorMess').css('display', 'none');
+            $.ajax({
+                url: url,
+                headers: {
+                    "Authorization": getFromStorage('Authorization')
+                },
+                type: 'GET',
+                success: function (data) {
+                    if (typeof data.success !== 'undefined') {
+                        if (data.success) {
+                            $('#registered').css('display', 'block');
+                            $('#singOut').css('display', 'block');
+                            $('#singUp').css('display', 'none');
+                        } else {
+                            $('#registered').css('display', 'none');
+                            $('#singUp').css('display', 'block');
+                            $('#singOut').css('display', 'none');
+                        }
+                    }
+                    if (typeof data.error !== 'undefined') {
+                        $('#errorMess').text(data.error);
+                        $('#errorMess').css('display', 'block');
+                    }
+                }
+            });
+        }
     </script>
 @stop

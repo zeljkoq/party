@@ -47,9 +47,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof UnauthorizedHttpException) {
-            return redirect('logout');
-        }
         return parent::render($request, $exception);
     }
 }
