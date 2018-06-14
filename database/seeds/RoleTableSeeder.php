@@ -5,6 +5,9 @@ use Illuminate\Database\Seeder;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class RoleTableSeeder
+ */
 class RoleTableSeeder extends Seeder
 {
     /**
