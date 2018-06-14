@@ -11,10 +11,10 @@
                 <div class="card-body">
                     <form>
                         <div class="form-group row">
-                            <label for="username" class="col-sm-4 col-form-label text-md-right">{{ __('Username') }}</label>
+                            <label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('Email') }}</label>
 
                             <div class="col-md-6">
-                                <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus>
+                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
                             </div>
                         </div>
 
@@ -51,12 +51,12 @@
     <script>
         $('#login').on('click', function(){
             hideMessages(getElementsForMessages());
-            var username = $('#username').val();
+            var email = $('#email').val();
             var password = $('#password').val();
             $.ajax({
                 url: '{{ route('login') }}',
                 type: 'POST',
-                data: ({username: username, password: password}),
+                data: ({email: email, password: password}),
                 success: function(data) {
                     addInStorage('Authorization', 'Bearer ' + data.access_token);
                     window.location = "{{ route('home') }}";

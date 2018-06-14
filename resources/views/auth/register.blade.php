@@ -9,11 +9,19 @@
                 <div class="card-body">
                     <form>
                         <div class="form-group row">
-                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email') }}</label>
 
                             <div class="col-md-6">
-                                <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required>
-                                <p id="usernameMess"></p>
+                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+                                <p id="emailMess"></p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required>
+                                <p id="nameMess"></p>
                             </div>
                         </div>
 
@@ -61,7 +69,7 @@
     <script>
         function getElementsForMessages(){
             return [
-                'username', 'password', 'passwordConfirm'
+                'email', 'name', 'password', 'passwordConfirm'
             ]
         }
 
@@ -85,14 +93,15 @@
 
         $('#register').on('click', function(){
             hideMessages(getElementsForMessages());
-            var username = $('#username').val();
+            var email = $('#email').val();
+            var name = $('#name').val();
             var password = $('#password').val();
             var passwordConfirm = $('#password-confirm').val();
             var userRole = $('#roles').val();
             $.ajax({
                 url: '{{ route('register') }}',
                 type: 'POST',
-                data: ({username: username, password: password, passwordConfirm: passwordConfirm, userRole: userRole}),
+                data: ({email: email, name: name, password: password, passwordConfirm: passwordConfirm, userRole: userRole}),
                 success: function(data) {
                     addInStorage('Authorization', 'Bearer ' + data.access_token);
                     window.location = "{{ route('home') }}";

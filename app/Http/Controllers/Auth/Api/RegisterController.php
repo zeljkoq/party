@@ -28,13 +28,14 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request)
     {
         $user = new User;
-        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->name = $request->name;
         $user->password = bcrypt($request->password);
         $user->save();
 
         $user->roles()->attach($request->userRole);
 
-        $credentials = request(['username', 'password']);
+        $credentials = request(['email', 'password']);
         if (!$token = auth()->attempt($credentials)) {
             return response()->json([
                 'error' => 'Unauthorized'
