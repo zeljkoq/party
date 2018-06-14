@@ -22,7 +22,6 @@ class CreateSongPartyTable extends Migration
             $table->foreign('song_id')->references('id')->on('songs')->onDelete('cascade');
             $table->unsignedInteger('party_id');
             $table->foreign('party_id')->references('id')->on('parties')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

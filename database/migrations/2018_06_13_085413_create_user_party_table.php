@@ -22,7 +22,6 @@ class CreateUserPartyTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedInteger('party_id');
             $table->foreign('party_id')->references('id')->on('parties')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

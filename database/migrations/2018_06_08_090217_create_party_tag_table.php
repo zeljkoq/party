@@ -22,7 +22,6 @@ class CreatePartyTagTable extends Migration
             $table->foreign('party_id')->references('id')->on('parties')->onDelete('cascade');
             $table->unsignedInteger('tag_id');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
