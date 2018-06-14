@@ -191,20 +191,22 @@ class AdminPartyController extends Controller
 
             $registeredUsers = $this->getIdsOfRegisteredUsers($party);
 
-            foreach ($party->songs as $song) {
+            $songsArr = [];
+            foreach ($party->songs as $key => $song) {
                 $assigned = false;
                 foreach ($registeredUsers as $key => $user) {
                     if ((isset($oldArtists[$song->id]) && !in_array($user, $oldArtists[$song->id]))
                         || empty($oldArtists)
                     ) {
-                        $song->users()
-                            ->attach($user, ['party_id' => $party->id]);
+                        $party->songs()->detach($song->id);
+                        $party->songs()->attach($song->id, ['user_id' => $user]);
                         unset($registeredUsers[$key]);
                         $assigned = true;
                     }
                 }
                 if (!$assigned) {
-                    $song->users()->attach(1, ['party_id' => $party->id]);
+                    $party->songs()->detach($song->id);
+                    $party->songs()->attach($song->id, ['user_id' => 1]);
                 }
             }
             return response([
@@ -224,11 +226,10 @@ class AdminPartyController extends Controller
      */
     public function details($party_id)
     {
-        $songs = Party::select('songs.name', 'songs.author', 'songs.link', 'songs.duration', 'users.name')
+        $songs = Party::select('songs.name', 'songs.author', 'songs.link', 'songs.duration', 'users.name as user_name')
             ->join('song_party', 'parties.id', '=', 'song_party.party_id')
             ->join('songs', 'song_party.song_id', '=', 'songs.id')
-            ->join('user_song', 'songs.id', '=', 'user_song.song_id')
-            ->join('users', 'user_song.user_id', '=', 'users.id')
+            ->join('users', 'song_party.user_id', '=', 'users.id')
             ->where('parties.id', $party_id)
             ->get();
         return response($songs);

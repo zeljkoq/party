@@ -202,7 +202,7 @@
                         html += '<td>' + data[i].author + '</td>';
                         html += '<td>' + data[i].link + '</td>';
                         html += '<td>' + data[i].duration + '</td>';
-                        html += '<td>' + data[i].name + '</td>';
+                        html += '<td>' + data[i].user_name + '</td>';
                         html += '</tr>';
                     }
                     $('#detailsModal').css('display', 'block');

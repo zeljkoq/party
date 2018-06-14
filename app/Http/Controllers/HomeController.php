@@ -34,7 +34,7 @@ class HomeController extends Controller
             Mail::send('home.mail', ['data' => $data], function ($message) use ($request) {
                 $message->from($request->email, $request->name);
 
-                $message->to('contact@qunatox.com')
+                $message->to('stefan.kuzmic@qunatox.com')
                     ->subject('Contact Form');
             });
             return response([
