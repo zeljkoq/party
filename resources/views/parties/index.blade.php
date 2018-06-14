@@ -81,6 +81,12 @@
                         dt = $(this).dataTable();
                         dt.fnDraw();
                     });
+                },
+                error: function (data) {
+                    if (data.statusText == "Unauthorized") {
+                        logoutUser();
+                        window.location = "/";
+                    }
                 }
             });
         });

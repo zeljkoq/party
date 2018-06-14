@@ -23,7 +23,8 @@ class AdminPartyController extends Controller
      */
     public function index()
     {
-        $data = AdminPartyResource::collection(Party::where('user_id', Auth()->user()->id)->get());
+        $data = AdminPartyResource::collection(Party::where('user_id',
+            Auth()->user()->id)->get());
         if (Auth()->user()->isAdmin()) {
             $data = AdminPartyResource::collection(Party::all());
         }
@@ -48,8 +49,10 @@ class AdminPartyController extends Controller
             $party->capacity = $request->capacity;
             $party->description = $request->description;
             $party->cover_photo = $request->file('cover_photo')
-                ->storeAs('public/cover_photos', rand(11111, 99999) . "_" . $request->cover_photo->getClientOriginalName());
-            $party->cover_photo = str_replace('public/', '', $party->cover_photo);
+                ->storeAs('public/cover_photos', rand(11111, 99999) . "_"
+                    . $request->cover_photo->getClientOriginalName());
+            $party->cover_photo = str_replace('public/', '',
+                $party->cover_photo);
             $party->user_id = Auth()->user()->id;
             $party->save();
             $tags = $this->createTagsIfNotExists($request->tags);
@@ -74,7 +77,8 @@ class AdminPartyController extends Controller
 
             $songsArr = [];
             foreach ($songs as $key => $song) {
-                $repetition = $this->checkSongRepetition($songsArr, $previousSongs, $song);
+                $repetition = $this->checkSongRepetition($songsArr,
+                    $previousSongs, $song);
 
                 if ($repetition) {
                     continue;
@@ -190,12 +194,15 @@ class AdminPartyController extends Controller
 
             $registeredUsers = $this->getIdsOfRegisteredUSers($party);
 
-
             foreach ($party->songs as $song) {
                 $assigned = false;
-                foreach ($registeredUsers as $user) {
-                    if (isset($oldArtists[$song->id]) && !in_array($user, $oldArtists[$song->id])) {
-                        $song->users()->attach($user, ['party_id' => $party->id]);
+                foreach ($registeredUsers as $key => $user) {
+                    if ((isset($oldArtists[$song->id]) && !in_array($user, $oldArtists[$song->id]))
+                        || empty($oldArtists)
+                    ) {
+                        $song->users()
+                            ->attach($user, ['party_id' => $party->id]);
+                        unset($registeredUsers[$key]);
                         $assigned = true;
                     }
                 }
@@ -220,18 +227,15 @@ class AdminPartyController extends Controller
      */
     public function details($party_id)
     {
-        $party = Party::find($party_id);
-        dd($party->songs->users);
-        $details = [];
-        foreach ($party->songs as $key => $song) {
-            $details[$key] = new \stdClass();
-            $details[$key]->name = $song->name;
-            $details[$key]->author = $song->author;
-            $details[$key]->link = $song->link;
-            $details[$key]->duration = $song->duration;
-            $details[$key]->username = $song->users[0]->username;
-        }
-        return response($details);
+        $songs = Party::select('songs.name', 'songs.author', 'songs.link',
+            'songs.duration', 'users.username')
+            ->join('song_party', 'parties.id', '=', 'song_party.party_id')
+            ->join('songs', 'song_party.song_id', '=', 'songs.id')
+            ->join('user_song', 'songs.id', '=', 'user_song.song_id')
+            ->join('users', 'user_song.user_id', '=', 'users.id')
+            ->where('parties.id', $party_id)
+            ->get();
+        return response($songs);
     }
 
     /**
@@ -312,10 +316,14 @@ class AdminPartyController extends Controller
             $lastSong = end($songsArr);
             if (in_array($lastSong, $previousSongs)) {
                 $previousKey = array_search($lastSong, $previousSongs);
-                if (isset($previousSongs[$previousKey+1]) && $previousSongs[$previousKey+1] == $song['id']) {
+                if (isset($previousSongs[$previousKey + 1])
+                    && $previousSongs[$previousKey + 1] == $song['id']
+                ) {
                     return true;
                 }
-                if (isset($previousSongs[$previousKey-1]) && $previousSongs[$previousKey-1] == $song['id']) {
+                if (isset($previousSongs[$previousKey - 1])
+                    && $previousSongs[$previousKey - 1] == $song['id']
+                ) {
                     return true;
                 }
             }

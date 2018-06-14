@@ -120,7 +120,9 @@
             html += '</td>';
             html += '<td>';
             if (model.start) {
-                html += '<a href="javascript:void(0)" onclick="details(\'' + model.details_link + '\')">details</a>';
+                html += '<a id="details" href="javascript:void(0)" onclick="details(\'' + model.details_link + '\')">details</a>';
+            } else {
+                html += '<a id="details" style="display: none" href="javascript:void(0)" onclick="details(\'' + model.details_link + '\')">details</a>';
             }
             html += '</td>';
             html += '<td><a href="javascript:void(0)" onclick="crud.fillEditForm(' + index + ')">edit</a></td>';
@@ -175,6 +177,7 @@
                         $('#success').text(data.success);
                         $('#success').css('display', 'block');
                         $('#start').css('display', 'none');
+                        $('#details').css('display', 'block');
                     }
                     if (typeof data.error !== 'undefined') {
                         $('#errorMess').text(data.error);

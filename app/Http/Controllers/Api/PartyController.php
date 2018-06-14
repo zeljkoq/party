@@ -11,10 +11,23 @@ class PartyController extends Controller
     public function index()
     {
         $user = User::find(Auth()->user()->id);
-        dd($user->songs[0]->pivot->party_id);
+        $songs = User::select(
+            'songs.name',
+            'songs.author',
+            'songs.link',
+            'songs.duration',
+            'parties.name as party_name',
+            'parties.date as party_date'
+        )
+            ->join('user_song', 'users.id', '=', 'user_song.user_id')
+            ->join('songs', 'user_song.song_id', '=', 'songs.id')
+            ->join('song_party', 'songs.id', '=', 'song_party.song_id')
+            ->join('parties', 'song_party.party_id', '=', 'parties.id')
+            ->where('users.id', Auth()->user()->id)
+            ->get();
         return response([
             'parties' => $user->parties,
-            'songs' => $user->songs
+            'songs' => $songs
         ]);
     }
 
