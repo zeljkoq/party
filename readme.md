@@ -3,7 +3,9 @@
 ### Version
 1.0.0
 
-## Setup Virtual Host on Ubuntu
+## Installation
+
+### Setup Virtual Host on Ubuntu
 
 Create the directory
 ```sh
@@ -56,7 +58,7 @@ $ sudo nano /etc/hosts
 111.111.111.111     hotel.local
 ```
 
-## Setup Project
+### Setup Project
 
 Navigate into html folder
 ```sh
@@ -97,7 +99,7 @@ Migrations and seeds
 $ php artisan migrate --seed
 ```
 
-## Setup JWT Auth
+### Setup JWT Auth
 
 Require package (version 1.0)
 ```sh
@@ -113,3 +115,5 @@ Generate secret key
 ```sh
 $ php artisan jwt:secret
 ```
+
+## Functionality

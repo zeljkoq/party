@@ -310,21 +310,21 @@ class AdminPartyController extends Controller
      */
     public function checkSongRepetition($songsArr, $previousSongs, $song)
     {
-        if (count($songsArr) > 0) {
-            $lastSong = end($songsArr);
-            if (in_array($lastSong, $previousSongs)) {
-                $previousKey = array_search($lastSong, $previousSongs);
-                if (isset($previousSongs[$previousKey + 1])
-                    && $previousSongs[$previousKey + 1] == $song['id']
-                ) {
-                    return true;
-                }
-                if (isset($previousSongs[$previousKey - 1])
-                    && $previousSongs[$previousKey - 1] == $song['id']
-                ) {
-                    return true;
-                }
-            }
+        if (count($songsArr) <= 0) {
+            return false;
+        }
+
+        $lastSong = end($songsArr);
+        if (!in_array($lastSong, $previousSongs)) {
+            return false;
+        }
+
+        $previousKey = array_search($lastSong, $previousSongs);
+        if (isset($previousSongs[$previousKey + 1]) && $previousSongs[$previousKey + 1] == $song['id']) {
+            return true;
+        }
+        if (isset($previousSongs[$previousKey - 1]) && $previousSongs[$previousKey - 1] == $song['id']) {
+            return true;
         }
     }
 
@@ -336,12 +336,13 @@ class AdminPartyController extends Controller
     public function getOldArtist($lastParties)
     {
         $oldArtists = [];
-        if ($lastParties) {
-            foreach ($lastParties as $lastParty) {
-                foreach ($lastParty->songs as $song) {
-                    foreach ($song->users as $k => $user) {
-                        $oldArtists[$song->id][$k] = $user->id;
-                    }
+        if (!$lastParties) {
+            return $oldArtists;
+        }
+        foreach ($lastParties as $lastParty) {
+            foreach ($lastParty->songs as $song) {
+                foreach ($song->users as $k => $user) {
+                    $oldArtists[$song->id][$k] = $user->id;
                 }
             }
         }

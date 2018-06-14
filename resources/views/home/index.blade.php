@@ -179,6 +179,12 @@
                         $('#errorMess').text(data.error);
                         $('#errorMess').css('display', 'block');
                     }
+                },
+                error: function (data) {
+                    if (data.statusText == "Unauthorized") {
+                        logoutUser();
+                        window.location = "/";
+                    }
                 }
             });
         }
