@@ -89,14 +89,12 @@ Route::middleware('jwt.auth')->group(function () {
         'middleware' => 'roles',
         'roles' => ['Admin', 'Party Maker']
     ]);
-
     Route::get('admin/parties/start/{party_id}', [
         'uses' => 'Admin\Api\AdminPartyController@start',
         'as' => 'admin.parties.start',
         'middleware' => 'roles',
         'roles' => ['Admin', 'Party Maker']
     ]);
-
     Route::get('admin/parties/details/{party_id}', [
         'uses' => 'Admin\Api\AdminPartyController@details',
         'as' => 'admin.parties.details',
