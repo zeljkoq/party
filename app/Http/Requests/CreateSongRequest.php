@@ -24,10 +24,10 @@ class CreateSongRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:4|max:20',
-            'author' => 'required|min:5|max:20',
-            'link' => 'required|min:5|max:100',
-            'duration' => 'required|between:0,99.99'
+            'name'     => 'required|min:4|max:20',
+            'author'   => 'required|min:5|max:20',
+            'link'     => 'required|min:5|max:100',
+            'duration' => 'required|between:0,99.99',
         ];
     }
 }

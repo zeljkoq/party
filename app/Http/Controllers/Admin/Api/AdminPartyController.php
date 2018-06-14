@@ -189,7 +189,7 @@ class AdminPartyController extends Controller
 
             $oldArtists = $this->getOldArtist($lastParties);
 
-            $registeredUsers = $this->getIdsOfRegisteredUSers($party);
+            $registeredUsers = $this->getIdsOfRegisteredUsers($party);
 
             foreach ($party->songs as $song) {
                 $assigned = false;
@@ -347,7 +347,12 @@ class AdminPartyController extends Controller
         return $oldArtists;
     }
 
-    public function getIdsOfRegisteredUSers($party)
+    /**
+     * @param $party
+     *
+     * @return array
+     */
+    public function getIdsOfRegisteredUsers($party)
     {
         $registeredUsers = [];
         foreach ($party->users as $k => $user) {
