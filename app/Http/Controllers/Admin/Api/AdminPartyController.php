@@ -23,8 +23,7 @@ class AdminPartyController extends Controller
      */
     public function index()
     {
-        $data = AdminPartyResource::collection(Party::where('user_id',
-            Auth()->user()->id)->get());
+        $data = AdminPartyResource::collection(Party::where('user_id', Auth()->user()->id)->get());
         if (Auth()->user()->isAdmin()) {
             $data = AdminPartyResource::collection(Party::all());
         }
@@ -49,10 +48,9 @@ class AdminPartyController extends Controller
             $party->capacity = $request->capacity;
             $party->description = $request->description;
             $party->cover_photo = $request->file('cover_photo')
-                ->storeAs('public/cover_photos', rand(11111, 99999) . "_"
-                    . $request->cover_photo->getClientOriginalName());
-            $party->cover_photo = str_replace('public/', '',
-                $party->cover_photo);
+                ->storeAs('public/cover_photos', rand(11111, 99999) .
+                    "_" . $request->cover_photo->getClientOriginalName());
+            $party->cover_photo = str_replace('public/', '', $party->cover_photo);
             $party->user_id = Auth()->user()->id;
             $party->save();
             $tags = $this->createTagsIfNotExists($request->tags);
@@ -77,8 +75,7 @@ class AdminPartyController extends Controller
 
             $songsArr = [];
             foreach ($songs as $key => $song) {
-                $repetition = $this->checkSongRepetition($songsArr,
-                    $previousSongs, $song);
+                $repetition = $this->checkSongRepetition($songsArr, $previousSongs, $song);
 
                 if ($repetition) {
                     continue;
@@ -227,8 +224,7 @@ class AdminPartyController extends Controller
      */
     public function details($party_id)
     {
-        $songs = Party::select('songs.name', 'songs.author', 'songs.link',
-            'songs.duration', 'users.username')
+        $songs = Party::select('songs.name', 'songs.author', 'songs.link', 'songs.duration', 'users.username')
             ->join('song_party', 'parties.id', '=', 'song_party.party_id')
             ->join('songs', 'song_party.song_id', '=', 'songs.id')
             ->join('user_song', 'songs.id', '=', 'user_song.song_id')
@@ -307,6 +303,7 @@ class AdminPartyController extends Controller
     /**
      * @param array $songsArr
      * @param array $previousSongs
+     * @param array $song
      *
      * @return bool
      */
