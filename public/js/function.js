@@ -44,7 +44,7 @@ var crud = {
     checkIfUnauthorized: function (data) {
         if (data.statusText == "Unauthorized") {
             logoutUser();
-            window.location = "/";
+            $('#unauthorizeModal').css("display", "block");
         }
     },
 

@@ -29,6 +29,7 @@ class PartyResource extends JsonResource
             'description' => $this->description,
             'cover_photo' => $this->cover_photo,
             'registered' => $registered,
+            'filled' => count($this->users) == $this->capacity ? true : false,
             'sing_up_link' => route('parties.sing.up', ['party_id' => $this->id]),
             'sing_out_link' => route('parties.sing.out', ['party_id' => $this->id])
         ];

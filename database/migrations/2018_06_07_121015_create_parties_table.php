@@ -26,6 +26,7 @@ class CreatePartiesTable extends Migration
             $table->string('cover_photo', 100);
             $table->boolean('start')->default(false);
             $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

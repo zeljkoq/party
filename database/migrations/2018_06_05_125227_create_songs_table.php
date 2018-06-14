@@ -23,6 +23,7 @@ class CreateSongsTable extends Migration
             $table->string('link', 100);
             $table->float('duration', 11, 2);
             $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

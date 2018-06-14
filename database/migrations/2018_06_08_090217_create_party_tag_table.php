@@ -19,7 +19,9 @@ class CreatePartyTagTable extends Migration
         Schema::create('party_tag', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('party_id');
+            $table->foreign('party_id')->references('id')->on('parties')->onDelete('cascade');
             $table->unsignedInteger('tag_id');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
             $table->timestamps();
         });
     }

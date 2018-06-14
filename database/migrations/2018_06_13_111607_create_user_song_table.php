@@ -19,8 +19,11 @@ class CreateUserSongTable extends Migration
         Schema::create('user_song', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedInteger('song_id');
+            $table->foreign('song_id')->references('id')->on('songs')->onDelete('cascade');
             $table->unsignedInteger('party_id');
+            $table->foreign('party_id')->references('id')->on('parties')->onDelete('cascade');
             $table->timestamps();
         });
     }
