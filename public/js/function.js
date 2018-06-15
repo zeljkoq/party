@@ -42,7 +42,7 @@ var crud = {
     modelArr: [],
 
     checkIfUnauthorized: function (data) {
-        if (data.statusText == "Unauthorized") {
+        if (data.status == "401") {
             logoutUser();
             $('#unauthorizeModal').css("display", "block");
         }

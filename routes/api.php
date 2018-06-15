@@ -9,6 +9,10 @@ Route::middleware('jwt.auth')->group(function () {
         'uses' => 'Api\HomeController@index',
         'as' => 'home.index',
     ]);
+    Route::get('home/routes', [
+        'uses' => 'Api\HomeController@routes',
+        'as' => 'home.routes',
+    ]);
 
     Route::get('parties/singUp/{party_id}', [
         'uses' => 'Api\PartyController@singUp',

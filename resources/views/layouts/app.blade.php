@@ -6,7 +6,7 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('home') }}">Home</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" id="navSongs">
         <a class="nav-link" href="{{ route('songs') }}">Songs</a>
     </li>
     <li class="nav-item" id="navParties">
@@ -37,6 +37,7 @@
             $('#navRegister').css('display', 'none')
         }
         if(!checkInStorage('Authorization')){
+            $('#navSongs').css('display', 'none')
             $('#navParties').css('display', 'none')
             $('#navAdmin').css('display', 'none')
             $('#navLogout').css('display', 'none')

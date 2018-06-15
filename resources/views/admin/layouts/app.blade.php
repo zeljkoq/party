@@ -6,10 +6,10 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.home') }}">Home</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" id="songs">
         <a class="nav-link" href="{{ route('admin.songs') }}">Songs</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" id="parties">
         <a class="nav-link" href="{{ route('admin.parties') }}">Parties</a>
     </li>
     <li class="nav-item" id="navAdmin">
@@ -34,5 +34,29 @@
             $('#navLogout').css('display', 'none')
             $('#navAdmin').css('display', 'none')
         }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '{{ route('home.routes') }}',
+                headers: {
+                    "Authorization": getFromStorage('Authorization')
+                },
+                success: function (data) {
+                    if(!data.includes('Admin') && !data.includes('DJ')) {
+                        $('#songs').css('display', 'none')
+                    }
+                    if(!data.includes('Admin') && !data.includes('Party Maker')) {
+                        $('#parties').css('display', 'none')
+                    }
+                },
+                error: function (data) {
+                    if (data.status == "401") {
+                        logoutUser();
+                        window.location = "/";
+                    }
+                }
+            });
+        });
     </script>
 @stop
