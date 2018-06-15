@@ -4,6 +4,11 @@ namespace App\Http\Resources\Party;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class AdminPartyResource
+ *
+ * @package App\Http\Resources\Party
+ */
 class AdminPartyResource extends JsonResource
 {
     /**

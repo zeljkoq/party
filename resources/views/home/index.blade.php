@@ -118,6 +118,12 @@
                     },
                     success: function (data) {
                         $('#parties').html(fillTable(data.data));
+                    },
+                    error: function (data) {
+                        if (data.statusText == "Unauthorized") {
+                            logoutUser();
+                            window.location = "/";
+                        }
                     }
                 });
             });

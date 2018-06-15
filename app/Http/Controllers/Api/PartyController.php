@@ -8,6 +8,9 @@ use App\Models\User;
 
 class PartyController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function index()
     {
         $user = User::find(Auth()->user()->id);
@@ -19,9 +22,8 @@ class PartyController extends Controller
             'parties.name as party_name',
             'parties.date as party_date'
         )
-            ->join('user_song', 'users.id', '=', 'user_song.user_id')
-            ->join('songs', 'user_song.song_id', '=', 'songs.id')
-            ->join('song_party', 'songs.id', '=', 'song_party.song_id')
+            ->join('song_party', 'users.id', '=', 'song_party.user_id')
+            ->join('songs', 'song_party.song_id', '=', 'songs.id')
             ->join('parties', 'song_party.party_id', '=', 'parties.id')
             ->where('users.id', Auth()->user()->id)
             ->get();

@@ -15,6 +15,9 @@ use App\Models\Role;
  */
 class RegisterController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function getRoles()
     {
         return RoleResource::collection(Role::all());

@@ -4,6 +4,11 @@ namespace App\Http\Resources\Role;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class RoleResource
+ *
+ * @package App\Http\Resources\Role
+ */
 class RoleResource extends JsonResource
 {
     /**

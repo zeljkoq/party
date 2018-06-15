@@ -329,7 +329,7 @@ class AdminPartyController extends Controller
     }
 
     /**
-     * @param $lastParties
+     * @param array $lastParties
      *
      * @return array
      */
@@ -350,7 +350,7 @@ class AdminPartyController extends Controller
     }
 
     /**
-     * @param $party
+     * @param object $party
      *
      * @return array
      */

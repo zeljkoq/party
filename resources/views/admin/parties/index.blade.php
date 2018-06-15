@@ -47,13 +47,13 @@
             <input type="hidden" id="editIndex">
             <input type="hidden" id="deleteIndex">
 
-            <button type="button" id="submitAdd">Create Song</button>
-            <button type="button" id="submitEdit" style="display: none;">Edit Song</button>
+            <button type="button" id="submitAdd">Create Party</button>
+            <button type="button" id="submitEdit" style="display: none;">Edit Party</button>
             <button type="button" id="cancelEdit" style="display: none;" onclick="crud.emptyEditForm()">Cancel</button>
         </form>
     </div>
     <div class="box">
-        <h3>List of songs</h3>
+        <h3>List of parties</h3>
         <table id="dataTable">
             <thead style="background-color: #ddd; font-weight: bold;">
             <tr>

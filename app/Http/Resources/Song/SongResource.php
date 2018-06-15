@@ -4,6 +4,11 @@ namespace App\Http\Resources\Song;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class SongResource
+ *
+ * @package App\Http\Resources\Song
+ */
 class SongResource extends JsonResource
 {
     /**

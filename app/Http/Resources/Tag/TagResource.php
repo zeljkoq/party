@@ -4,6 +4,11 @@ namespace App\Http\Resources\Tag;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class TagResource
+ *
+ * @package App\Http\Resources\Tag
+ */
 class TagResource extends JsonResource
 {
     /**

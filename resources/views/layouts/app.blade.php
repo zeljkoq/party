@@ -43,5 +43,3 @@
         }
     </script>
 @stop
-
-{{--nemas potrebu za tabelom user_song, ostavi samo song_party i stavi da user_id moze da bude nullable--}}
