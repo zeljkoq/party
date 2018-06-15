@@ -30,7 +30,7 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        $response = $this->homeService()->register($request);
+        $response = $this->registerService()->register($request);
 
         return $response;
     }

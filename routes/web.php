@@ -4,7 +4,8 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('loginForm');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('registerForm');
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::post('send-mail', 'HomeController@sendMail')->name('send_mail');
+Route::post('send-mail', 'HomeController@sendMail')->name('send.mail');
+Route::get('home/parties', 'HomeController@parties')->name('home.parties');
 
 Route::get('songs', 'SongController@index')->name('songs');
 

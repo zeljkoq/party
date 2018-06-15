@@ -1,18 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: user
- * Date: 15.6.18.
- * Time: 13.11
- */
 
 namespace App\Http\Services;
 
-
 use App\Models\User;
 
+/**
+ * Class RegisterService
+ *
+ * @package App\Http\Services
+ */
 class RegisterService
 {
+    /**
+     * @param $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register($request)
     {
         $user = new User();

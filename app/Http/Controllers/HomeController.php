@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Party\PartyResource;
+use App\Models\Party;
 use Illuminate\Http\Request;
 
 /**
@@ -29,5 +31,16 @@ class HomeController extends Controller
         $response = $this->homeService()->sendMail($request);
 
         return $response;
+    }
+
+    public function parties()
+    {
+        $parties = Party::all();
+        foreach ($parties as $key => $party) {
+            if ($party->date < date('Y-m-d')) {
+                unset($parties[$key]);
+            }
+        }
+        return PartyResource::collection($parties);
     }
 }

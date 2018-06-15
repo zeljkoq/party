@@ -41,6 +41,11 @@ class HomeService
         return response($roles);
     }
 
+    /**
+     * @param $request
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function sendMail($request)
     {
         $data = $request->message;

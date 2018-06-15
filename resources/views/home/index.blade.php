@@ -129,6 +129,18 @@
                     }
                 });
             });
+        }else{
+            $(document).ready(function () {
+                $.ajax({
+                    url: '{{ route('home.parties') }}',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (data) {
+                        $('#parties').html(fillTable(data.data));
+                    }
+                });
+            });
         }
 
         $('#sendMail').on('click', function () {
@@ -138,7 +150,7 @@
             $('#success').css('display', 'none');
             $('#error').css('display', 'none');
             $.ajax({
-                url: '{{ route('send_mail') }}',
+                url: '{{ route('send.mail') }}',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },

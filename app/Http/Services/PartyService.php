@@ -37,6 +37,11 @@ class PartyService
         ]);
     }
 
+    /**
+     * @param $party_id
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function singUp($party_id)
     {
         try {
@@ -53,6 +58,11 @@ class PartyService
         }
     }
 
+    /**
+     * @param $party_id
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function singOut($party_id)
     {
         try {

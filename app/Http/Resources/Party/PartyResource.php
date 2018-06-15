@@ -22,7 +22,7 @@ class PartyResource extends JsonResource
     {
         $registered = false;
         foreach ($this->users as $user) {
-            if ($user->id == Auth()->user()->id) {
+            if (isset(Auth()->user()->id) && $user->id == Auth()->user()->id) {
                 $registered = true;
             }
         }

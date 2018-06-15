@@ -16,7 +16,7 @@ class LoginController extends Controller
      */
     public function login()
     {
-        $response = $this->homeService()->login();
+        $response = $this->loginService()->login();
 
         return $response;
     }
