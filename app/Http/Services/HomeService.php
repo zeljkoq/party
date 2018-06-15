@@ -43,7 +43,6 @@ class HomeService
 
     public function sendMail($request)
     {
-        dd($request->all());
         $data = $request->message;
         try {
             Mail::send('home.mail', ['data' => $data], function ($message) use ($request) {

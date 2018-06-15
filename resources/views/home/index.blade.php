@@ -139,6 +139,9 @@
             $('#error').css('display', 'none');
             $.ajax({
                 url: '{{ route('send_mail') }}',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 type: 'POST',
                 data: ({name: name, email: email, message: message}),
                 success: function (data) {
