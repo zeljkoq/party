@@ -4,10 +4,6 @@ namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Requests\CreatePartyRequest;
 use App\Http\Requests\UpdatePartyRequest;
-use App\Http\Resources\Party\AdminPartyResource;
-use App\Http\Resources\Tag\TagResource;
-use App\Models\Party;
-use App\Models\Tag;
 use App\Http\Controllers\Controller;
 
 /**

@@ -33,6 +33,9 @@ class HomeController extends Controller
         return $response;
     }
 
+    /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function parties()
     {
         $parties = Party::all();

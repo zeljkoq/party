@@ -53,7 +53,7 @@ class HomeService
             Mail::send('home.mail', ['data' => $data], function ($message) use ($request) {
                 $message->from($request->email, $request->name);
 
-                $message->to('stefan.kuzmic@qunatox.com')
+                $message->to('stefan.kuzmic@quantox.com')
                     ->subject('Contact Form');
             });
             return response([

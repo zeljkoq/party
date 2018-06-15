@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Party;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 
 class PartyController extends Controller
 {
