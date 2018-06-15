@@ -26,7 +26,7 @@ class Party extends Model
      */
     public function tags()
     {
-        return $this->belongsToMany('App\Models\Tag');
+        return $this->belongsToMany(Tag::class);
     }
 
     /**
@@ -34,7 +34,7 @@ class Party extends Model
      */
     public function songs()
     {
-        return $this->belongsToMany('App\Models\Song', 'song_party');
+        return $this->belongsToMany(Song::class, 'song_party')->withPivot('user_id');
     }
 
     /**
@@ -42,6 +42,6 @@ class Party extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\Models\User', 'user_party');
+        return $this->belongsToMany(User::class, 'user_party');
     }
 }

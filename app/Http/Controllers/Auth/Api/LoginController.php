@@ -16,15 +16,8 @@ class LoginController extends Controller
      */
     public function login()
     {
-        $credentials = request(['email', 'password']);
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json([
-                'error' => 'Unauthorized'
-            ], 401);
-        }
+        $response = $this->homeService()->login();
 
-        return response()->json([
-            'access_token' => $token
-        ]);
+        return $response;
     }
 }

@@ -30,23 +30,8 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        $user = new User;
-        $user->email = $request->email;
-        $user->name = $request->name;
-        $user->password = bcrypt($request->password);
-        $user->save();
+        $response = $this->homeService()->register($request);
 
-        $user->roles()->attach($request->userRole);
-
-        $credentials = request(['email', 'password']);
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json([
-                'error' => 'Unauthorized'
-            ], 401);
-        }
-
-        return response()->json([
-            'access_token' => $token
-        ]);
+        return $response;
     }
 }

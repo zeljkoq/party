@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Class HomeController
@@ -27,21 +26,8 @@ class HomeController extends Controller
      */
     public function sendMail(Request $request)
     {
-        $data = $request->message;
-        try {
-            Mail::send('home.mail', ['data' => $data], function ($message) use ($request) {
-                $message->from($request->email, $request->name);
+        $response = $this->homeService()->sendMail($request);
 
-                $message->to('stefan.kuzmic@qunatox.com')
-                    ->subject('Contact Form');
-            });
-            return response([
-                'success' => 'Your contact form have been successfully sent.'
-            ]);
-        } catch (\Exception $e) {
-            return response([
-                'error' => 'Error. Please, try again.'
-            ]);
-        }
+        return $response;
     }
 }

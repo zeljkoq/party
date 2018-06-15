@@ -30,23 +30,9 @@ class AdminSongController extends Controller
      */
     public function store(CreateSongRequest $request)
     {
-        try {
-            $song = new Song();
-            $song->name = $request->name;
-            $song->author = $request->author;
-            $song->link = $request->link;
-            $song->duration = $request->duration;
-            $song->user_id = Auth()->user()->id;
-            $song->save();
-            return response([
-                'data' => new AdminSongResource($song),
-                'success' => 'You have been successfully created song.'
-            ]);
-        } catch (\Exception $e) {
-            return response([
-                'error' => 'Error! Please, try again.'
-            ]);
-        }
+        $response = $this->adminSongService()->store($request);
+
+        return $response;
     }
 
     /**
@@ -57,6 +43,7 @@ class AdminSongController extends Controller
     public function show($song_id)
     {
         $song = Song::findOrFail($song_id);
+
         return new AdminSongResource($song);
     }
 
@@ -67,22 +54,9 @@ class AdminSongController extends Controller
      */
     public function update(UpdateSongRequest $request)
     {
-        try {
-            $song = Song::findOrFail($request->id);
-            $song->name = $request->name;
-            $song->author = $request->author;
-            $song->link = $request->link;
-            $song->duration = $request->duration;
-            $song->save();
-            return response([
-                'data' => new AdminSongResource($song),
-                'success' => 'You have been successfully updated song.'
-            ]);
-        } catch (\Exception $e) {
-            return response([
-                'error' => 'Error! Please, try again.'
-            ]);
-        }
+        $response = $this->adminSongService()->update($request);
+
+        return $response;
     }
 
     /**
@@ -92,17 +66,8 @@ class AdminSongController extends Controller
      */
     public function delete($song_id)
     {
-        try {
-            $song = Song::findOrFail($song_id);
-            $song->delete();
-            return response([
-                'id' => $song_id,
-                'success' => 'You have been successfully deleted songs.'
-            ]);
-        } catch (\Exception $e) {
-            return response([
-                'error' => 'Error! Please, try again.'
-            ]);
-        }
+        $response = $this->adminSongService()->delete($song_id);
+
+        return $response;
     }
 }

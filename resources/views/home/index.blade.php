@@ -74,9 +74,9 @@
                 html += '<div class="col-md-4">';
                 html += '<div class="thumbnail">';
                 if(parties[i].registered) {
-                    html += '<div id="registered" class="alert alert-success" style="color:green">You are registered on this party</div>';
+                    html += '<div id="registered_'+parties[i].id+'" class="alert alert-success" style="color:green">You are registered on this party</div>';
                 } else {
-                    html += '<div id="registered" class="alert alert-success" style="color:green;display:none">You are registered on this party</div>';
+                    html += '<div id="registered_'+parties[i].id+'" class="alert alert-success" style="color:green;display:none">You are registered on this party</div>';
                 }
                 html += '<img src="/storage/' + parties[i].cover_photo + '">';
                 html += '<div class="caption">';
@@ -86,16 +86,18 @@
                 html += 'Duration: ' + parties[i].duration + '<br>';
                 html += 'Capacity: ' + parties[i].capacity + '<br>';
                 html += '</p>';
-                if(parties[i].registered) {
-                    html += '<p><button id="singOut" onclick="confModal(\'Are you sure you want to sing out from this party?\', \'Sing out\', \'' + parties[i].sing_out_link + '\')" class="btn btn-primary">Sing out</button>';
-                    if(!parties[i].filled) {
-                        html += '<p><button id="singUp" onclick="confModal(\'Are you sure you want to sing up for this party?\', \'Sing up\', \'' + parties[i].sing_up_link + '\')" class="btn btn-primary" style="display: none">Sing up</button>';
+                if(!parties[i].start) {
+                    if (parties[i].registered) {
+                        html += '<p><button id="singOut" onclick="confModal(\'Are you sure you want to sing out from this party?\', \'Sing out\', \'' + parties[i].sing_out_link + '\')" class="btn btn-primary">Sing out</button>';
+                        if (!parties[i].filled) {
+                            html += '<p><button id="singUp" onclick="confModal(\'Are you sure you want to sing up for this party?\', \'Sing up\', \'' + parties[i].sing_up_link + '\')" class="btn btn-primary" style="display: none">Sing up</button>';
+                        }
+                    } else {
+                        if (!parties[i].filled) {
+                            html += '<p><button id="singUp" onclick="confModal(\'Are you sure you want to sing up for this party?\', \'Sing up\', \'' + parties[i].sing_up_link + '\')" class="btn btn-primary" role="button">Sing up</button>';
+                        }
+                        html += '<p><button id="singOut" onclick="confModal(\'Are you sure you want to sing out from this party?\', \'Sing out\', \'' + parties[i].sing_out_link + '\')" class="btn btn-primary" style="display: none">Sing out</button>';
                     }
-                }else {
-                    if(!parties[i].filled) {
-                        html += '<p><button id="singUp" onclick="confModal(\'Are you sure you want to sing up for this party?\', \'Sing up\', \'' + parties[i].sing_up_link + '\')" class="btn btn-primary" role="button">Sing up</button>';
-                    }
-                    html += '<p><button id="singOut" onclick="confModal(\'Are you sure you want to sing out from this party?\', \'Sing out\', \'' + parties[i].sing_out_link + '\')" class="btn btn-primary" style="display: none">Sing out</button>';
                 }
                 html += '</p>';
                 html += '</div>';
@@ -172,11 +174,11 @@
                 success: function (data) {
                     if (typeof data.success !== 'undefined') {
                         if (data.success) {
-                            $('#registered').css('display', 'block');
+                            $('#registered_' + data.id).css('display', 'block');
                             $('#singOut').css('display', 'block');
                             $('#singUp').css('display', 'none');
                         } else {
-                            $('#registered').css('display', 'none');
+                            $('#registered_' + data.id).css('display', 'none');
                             $('#singUp').css('display', 'block');
                             $('#singOut').css('display', 'none');
                         }

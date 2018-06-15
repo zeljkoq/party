@@ -34,6 +34,7 @@ class PartyResource extends JsonResource
             'capacity'      => $this->capacity,
             'description'   => $this->description,
             'cover_photo'   => $this->cover_photo,
+            'start'         => $this->start,
             'registered'    => $registered,
             'filled'        => count($this->users) == $this->capacity ? true : false,
             'sing_up_link'  => route('parties.sing.up', ['party_id' => $this->id]),

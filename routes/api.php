@@ -14,11 +14,11 @@ Route::middleware('jwt.auth')->group(function () {
         'as' => 'home.routes',
     ]);
 
-    Route::get('parties/singUp/{party_id}', [
+    Route::get('parties/sing-up/{party_id}', [
         'uses' => 'Api\PartyController@singUp',
         'as' => 'parties.sing.up',
     ]);
-    Route::get('parties/singOut/{party_id}', [
+    Route::get('parties/sing-out/{party_id}', [
         'uses' => 'Api\PartyController@singOut',
         'as' => 'parties.sing.out',
     ]);

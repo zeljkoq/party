@@ -21,6 +21,6 @@ class Tag extends Model
      */
     public function parties()
     {
-        return $this->belongsToMany('App\Models\Party');
+        return $this->belongsToMany(Party::class);
     }
 }

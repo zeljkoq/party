@@ -24,7 +24,7 @@ class Song extends Model
      */
     public function parties()
     {
-        return $this->belongsToMany('App\Models\Party', 'song_party');
+        return $this->belongsToMany(Party::class, 'song_party');
     }
 
     /**
@@ -32,6 +32,6 @@ class Song extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\Models\User', 'user_song');
+        return $this->belongsToMany(User::class, 'user_song');
     }
 }

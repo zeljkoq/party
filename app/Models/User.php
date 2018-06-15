@@ -6,6 +6,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ * Class User
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable implements JWTSubject
 {
 
@@ -59,7 +64,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function roles()
     {
-        return $this->belongsToMany('App\Models\Role', 'user_role');
+        return $this->belongsToMany(Role::class, 'user_role');
     }
 
     /**
@@ -117,7 +122,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function parties()
     {
-        return $this->belongsToMany('App\Models\Party', 'user_party');
+        return $this->belongsToMany(Party::class, 'user_party');
     }
 
     /**
@@ -125,6 +130,6 @@ class User extends Authenticatable implements JWTSubject
      */
     public function songs()
     {
-        return $this->belongsToMany('App\Models\Song', 'user_song')->withPivot('party_id');
+        return $this->belongsToMany(Song::class, 'user_song')->withPivot('party_id');
     }
 }
