@@ -126,7 +126,7 @@
             }
             html += '</td>';
             html += '<td><a href="javascript:void(0)" onclick="crud.fillEditForm(' + index + ')">edit</a></td>';
-            html += '<td><a href="javascript:void(0)" onclick="deleteModal(\'Are you sure you want to delete this party?\', \'Delete\', \'' + model.delete_link + '\')">delete</a></td>';
+            html += '<td><a href="javascript:void(0)" onclick="deleteModal(\'Are you sure you want to delete this party?\', \'Delete\', \'' + model.delete_link + '\', '+index+')">delete</a></td>';
             html += '</tr>';
 
             return html;
