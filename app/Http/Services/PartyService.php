@@ -17,7 +17,6 @@ class PartyService
      */
     public function index()
     {
-//        dd(Party::all()->first()->songsPerUSer);
         $user = User::find(Auth()->user()->id);
         $songs = User::select(
             'songs.name',

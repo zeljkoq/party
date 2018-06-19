@@ -25,7 +25,6 @@ class Party extends Model
     /**
      * @var array
      */
-//    protected $appends = ['songsPerUser'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -50,9 +49,4 @@ class Party extends Model
     {
         return $this->belongsToMany(User::class, 'user_party');
     }
-
-//    public function getSongsPerUserAttribute()
-//    {
-//        return $this->songs()->wherePivot('user_id', Auth()->user()->id)->get();
-//    }
 }
