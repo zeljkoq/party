@@ -65,6 +65,7 @@
                     $('#parties').html(html);
 
                     var songs = data.songs;
+                    console.log(songs)
                     html = '';
                     for (i = 0; i < songs.length; i++) {
                         html += '<tr>';

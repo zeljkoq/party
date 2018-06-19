@@ -124,12 +124,4 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(Party::class, 'user_party');
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function songs()
-    {
-        return $this->belongsToMany(Song::class, 'user_song')->withPivot('party_id');
-    }
 }

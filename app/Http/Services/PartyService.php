@@ -17,6 +17,7 @@ class PartyService
      */
     public function index()
     {
+//        dd(Party::all()->first()->songsPerUSer);
         $user = User::find(Auth()->user()->id);
         $songs = User::select(
             'songs.name',
@@ -31,6 +32,7 @@ class PartyService
             ->join('parties', 'song_party.party_id', '=', 'parties.id')
             ->where('users.id', Auth()->user()->id)
             ->get();
+
         return response([
             'parties' => $user->parties,
             'songs'   => $songs

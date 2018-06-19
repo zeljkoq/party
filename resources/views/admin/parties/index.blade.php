@@ -195,6 +195,7 @@
                 },
                 type: 'GET',
                 success: function (data) {
+                    console.log(data)
                     var html = '';
                     for (i = 0;i < data.length; i++) {
                         html += '<tr>';
@@ -202,7 +203,7 @@
                         html += '<td>' + data[i].author + '</td>';
                         html += '<td>' + data[i].link + '</td>';
                         html += '<td>' + data[i].duration + '</td>';
-                        html += '<td>' + data[i].user_name + '</td>';
+                        html += '<td>' + data[i].user.name + '</td>';
                         html += '</tr>';
                     }
                     $('#detailsModal').css('display', 'block');

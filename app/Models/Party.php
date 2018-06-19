@@ -19,7 +19,13 @@ class Party extends Model
             'capacity',
             'description',
             'cover_photo',
+            'user_id'
         ];
+
+    /**
+     * @var array
+     */
+//    protected $appends = ['songsPerUser'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -34,7 +40,7 @@ class Party extends Model
      */
     public function songs()
     {
-        return $this->belongsToMany(Song::class, 'song_party')->withPivot('user_id');
+        return $this->belongsToMany(Song::class, 'song_party')->withPivot('user_id as artist_id');
     }
 
     /**
@@ -44,4 +50,9 @@ class Party extends Model
     {
         return $this->belongsToMany(User::class, 'user_party');
     }
+
+//    public function getSongsPerUserAttribute()
+//    {
+//        return $this->songs()->wherePivot('user_id', Auth()->user()->id)->get();
+//    }
 }

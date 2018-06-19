@@ -9,6 +9,7 @@ use App\Http\Resources\Tag\TagResource;
 use App\Models\Party;
 use App\Models\Song;
 use App\Models\Tag;
+use Illuminate\Http\Request;
 
 /**
  * Class AdminPartyService
@@ -40,66 +41,18 @@ class AdminPartyService
     public function store(CreatePartyRequest $request)
     {
         try {
-            $party = new Party();
-            $party->name = $request->name;
-            $party->date = date('Y-m-d', strtotime($request->date));
-            $party->duration = $request->duration;
-            $party->capacity = $request->capacity;
-            $party->description = $request->description;
-            $party->cover_photo = $request->file('cover_photo')
+            $data = $request->only(['name', 'duration', 'capacity', 'description']);
+            $data['date'] = date('Y-m-d', strtotime($request->date));
+            $data['cover_photo'] = $request->file('cover_photo')
                 ->storeAs('public/cover_photos', rand(11111, 99999) .
                     "_" . $request->cover_photo->getClientOriginalName());
-            $party->cover_photo = str_replace('public/', '', $party->cover_photo);
-            $party->user_id = Auth()->user()->id;
-            $party->save();
-            $tags = $this->createTagsIfNotExists($request->tags);
-            foreach ($tags as $key => $tag) {
-                if (!is_numeric($tag)) {
-                    $newTag = new Tag;
-                    $newTag->name = $tag;
-                    $newTag->save();
-                    $tags[$key] = $newTag->id;
-                }
-            }
-            $party->tags()->attach($tags);
+            $data['cover_photo'] = str_replace('public/', '', $data['cover_photo']);
+            $data['user_id'] = Auth()->user()->id;
+            $party = Party::create($data);
 
-            $lastParty = $this->getLastParty($party);
+            $this->attachTags($request, $party);
 
-            $previousSongs = $this->getSongsFromLastParty($lastParty);
-
-            $durationInMinutes = $request->duration * 60;
-
-            $songs = Song::all()->toArray();
-            shuffle($songs);
-
-            $songsArr = [];
-            foreach ($songs as $key => $song) {
-                $repetition = $this->checkSongRepetition($songsArr, $previousSongs, $song);
-
-                if ($repetition) {
-                    continue;
-                }
-
-                if ($song['duration'] > $durationInMinutes) {
-                    $songsArr[$key] = $song['id'];
-                    break;
-                }
-                $songsArr[$key] = $song['id'];
-                $durationInMinutes -= $song['duration'];
-            }
-
-            if ($durationInMinutes > 0) {
-                foreach ($songs as $key => $song) {
-                    if ($song['duration'] > $durationInMinutes) {
-                        $songsArr[$key] = $song['id'];
-                        break;
-                    }
-                    $songsArr[$key] = $song['id'];
-                    $durationInMinutes -= $song['duration'];
-                }
-            }
-
-            $party->songs()->attach($songsArr);
+            $this->attachSongs($request, $party);
 
             return response([
                 'data' => new AdminPartyResource($party),
@@ -134,12 +87,9 @@ class AdminPartyService
     {
         try {
             $party = Party::findOrFail($request->id);
-            $party->name = $request->name;
-            $party->date = date('Y-m-d', strtotime($request->date));
-            $party->duration = $request->duration;
-            $party->capacity = $request->capacity;
-            $party->description = $request->description;
-            $party->save();
+            $data = $request->only(['name', 'duration', 'capacity', 'description']);
+            $data['date'] = date('Y-m-d', strtotime($request->date));
+            $party->update($data);
             return response([
                 'data' => new AdminPartyResource($party),
                 'success' => 'You have been successfully updated party.'
@@ -159,8 +109,7 @@ class AdminPartyService
     public function delete($party_id)
     {
         try {
-            $party = Party::findOrFail($party_id);
-            $party->delete();
+            Party::destroy($party_id);
             return response([
                 'id' => $party_id,
                 'success' => 'You have been successfully deleted party.'
@@ -224,13 +173,67 @@ class AdminPartyService
      */
     public function details($party_id)
     {
-        $songs = Party::select('songs.name', 'songs.author', 'songs.link', 'songs.duration', 'users.name as user_name')
-            ->join('song_party', 'parties.id', '=', 'song_party.party_id')
-            ->join('songs', 'song_party.song_id', '=', 'songs.id')
-            ->join('users', 'song_party.user_id', '=', 'users.id')
-            ->where('parties.id', $party_id)
-            ->get();
+        $songs = Party::findOrFail($party_id)->songs;
         return response($songs);
+    }
+
+    /**
+     * @param Request $request
+     * @param object $party
+     */
+    public function attachTags($request, $party)
+    {
+        $tags = $this->createTagsIfNotExists($request->tags);
+        foreach ($tags as $key => $tag) {
+            if (!is_numeric($tag)) {
+                $newTag = new Tag;
+                $newTag->name = $tag;
+                $newTag->save();
+                $tags[$key] = $newTag->id;
+            }
+        }
+        $party->tags()->attach($tags);
+    }
+
+    public function attachSongs($request, $party)
+    {
+        $lastParty = $this->getLastParty($party);
+
+        $previousSongs = $this->getSongsFromLastParty($lastParty);
+
+        $durationInMinutes = $request->duration * 60;
+
+        $songs = Song::all()->toArray();
+        shuffle($songs);
+
+        $songsArr = [];
+        foreach ($songs as $key => $song) {
+            $repetition = $this->checkSongRepetition($songsArr, $previousSongs, $song);
+
+            if ($repetition) {
+                continue;
+            }
+
+            if ($song['duration'] > $durationInMinutes) {
+                $songsArr[$key] = $song['id'];
+                break;
+            }
+            $songsArr[$key] = $song['id'];
+            $durationInMinutes -= $song['duration'];
+        }
+
+        if ($durationInMinutes > 0) {
+            foreach ($songs as $key => $song) {
+                if ($song['duration'] > $durationInMinutes) {
+                    $songsArr[$key] = $song['id'];
+                    break;
+                }
+                $songsArr[$key] = $song['id'];
+                $durationInMinutes -= $song['duration'];
+            }
+        }
+
+        $party->songs()->attach($songsArr);
     }
 
     /**

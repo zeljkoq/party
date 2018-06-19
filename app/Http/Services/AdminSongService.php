@@ -22,13 +22,9 @@ class AdminSongService
     public function store(CreateSongRequest $request)
     {
         try {
-            $song = new Song();
-            $song->name = $request->name;
-            $song->author = $request->author;
-            $song->link = $request->link;
-            $song->duration = $request->duration;
-            $song->user_id = Auth()->user()->id;
-            $song->save();
+            $data = $request->only(['name', 'author', 'link', 'duration']);
+            $data['user_id'] = Auth()->user()->id;
+            $song = Song::create($data);
             return response([
                 'data' => new AdminSongResource($song),
                 'success' => 'You have been successfully created song.'
@@ -49,11 +45,7 @@ class AdminSongService
     {
         try {
             $song = Song::findOrFail($request->id);
-            $song->name = $request->name;
-            $song->author = $request->author;
-            $song->link = $request->link;
-            $song->duration = $request->duration;
-            $song->save();
+            $song->update($request->only(['name', 'author', 'link', 'duration']));
             return response([
                 'data' => new AdminSongResource($song),
                 'success' => 'You have been successfully updated song.'
@@ -73,8 +65,7 @@ class AdminSongService
     public function delete($song_id)
     {
         try {
-            $song = Song::findOrFail($song_id);
-            $song->delete();
+            Song::destroy($song_id);
             return response([
                 'id' => $song_id,
                 'success' => 'You have been successfully deleted songs.'

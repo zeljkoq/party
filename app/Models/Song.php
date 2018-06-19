@@ -17,7 +17,13 @@ class Song extends Model
             'author',
             'link',
             'duration',
+            'user_id'
         ];
+
+    /**
+     * @var array
+     */
+    protected $appends = ['user'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -28,10 +34,12 @@ class Song extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return object
      */
-    public function users()
+    public function getUserAttribute()
     {
-        return $this->belongsToMany(User::class, 'user_song');
+        if ($this->artist_id) {
+            return User::findOrFail($this->artist_id);
+        }
     }
 }
