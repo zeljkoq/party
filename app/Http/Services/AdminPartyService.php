@@ -41,14 +41,7 @@ class AdminPartyService
     public function store(CreatePartyRequest $request)
     {
         try {
-            $data = $request->only(['name', 'duration', 'capacity', 'description']);
-            $data['date'] = date('Y-m-d', strtotime($request->date));
-            $data['cover_photo'] = $request->file('cover_photo')
-                ->storeAs('public/cover_photos', uniqid(null, true) .
-                    "_" . $request->cover_photo->getClientOriginalName());
-            $data['cover_photo'] = str_replace('public/', '', $data['cover_photo']);
-            $data['user_id'] = Auth()->user()->id;
-            $party = Party::create($data);
+            $party = Party::create($this->getParametersForDB($request));
 
             $this->attachTags($request, $party);
 
@@ -171,6 +164,23 @@ class AdminPartyService
     {
         $songs = Party::findOrFail($party_id)->songs;
         return response($songs);
+    }
+
+    /**
+     * @param $request
+     *
+     * @return array
+     */
+    public function getParametersForDB($request)
+    {
+        $data = $request->only(['name', 'duration', 'capacity', 'description']);
+        $data['date'] = date('Y-m-d', strtotime($request->date));
+        $data['cover_photo'] = $request->file('cover_photo')
+            ->storeAs('public/cover_photos', uniqid(null, true) .
+                "_" . $request->cover_photo->getClientOriginalName());
+        $data['cover_photo'] = str_replace('public/', '', $data['cover_photo']);
+        $data['user_id'] = Auth()->user()->id;
+        return $data;
     }
 
     /**
