@@ -22,6 +22,11 @@ class HomeController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function routes(Request $request)
     {
         $response = $this->homeService()->routes($request);

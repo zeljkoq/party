@@ -20,7 +20,6 @@ function deleteFromStorage(name) {
 
 function logoutUser() {
     deleteFromStorage('Authorization');
-    window.location = "/login";
 }
 
 function hideMessages(elementIDs) {

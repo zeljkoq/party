@@ -26,6 +26,7 @@ class PartyResource extends JsonResource
                 $registered = true;
             }
         }
+        $auth = Auth()->user() ? true : false;
         return [
             'id'            => $this->id,
             'name'          => $this->name,
@@ -36,6 +37,7 @@ class PartyResource extends JsonResource
             'cover_photo'   => $this->cover_photo,
             'start'         => $this->start,
             'registered'    => $registered,
+            'auth'          => $auth,
             'filled'        => count($this->users) == $this->capacity ? true : false,
             'sing_up_link'  => route('parties.sing.up', ['party_id' => $this->id]),
             'sing_out_link' => route('parties.sing.out', ['party_id' => $this->id]),

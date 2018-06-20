@@ -44,7 +44,7 @@ class AdminPartyService
             $data = $request->only(['name', 'duration', 'capacity', 'description']);
             $data['date'] = date('Y-m-d', strtotime($request->date));
             $data['cover_photo'] = $request->file('cover_photo')
-                ->storeAs('public/cover_photos', rand(11111, 99999) .
+                ->storeAs('public/cover_photos', uniqid(null, true) .
                     "_" . $request->cover_photo->getClientOriginalName());
             $data['cover_photo'] = str_replace('public/', '', $data['cover_photo']);
             $data['user_id'] = Auth()->user()->id;
@@ -129,13 +129,11 @@ class AdminPartyService
     public function start($party_id)
     {
         try {
+            $oldArtists = $this->getOldArtist(Party::where('start', 1)->get());
+
             $party = Party::find($party_id);
             $party->start = 1;
             $party->save();
-
-            $lastParties = Party::where('start', 1)->get();
-
-            $oldArtists = $this->getOldArtist($lastParties);
 
             $registeredUsers = $this->getIdsOfRegisteredUsers($party);
 
@@ -145,15 +143,13 @@ class AdminPartyService
                     if ((isset($oldArtists[$song->id]) && !in_array($user, $oldArtists[$song->id]))
                         || empty($oldArtists)
                     ) {
-                        $party->songs()->detach($song->id);
-                        $party->songs()->attach($song->id, ['user_id' => $user]);
+                        $party->songs()->updateExistingPivot($song->id, ['user_id' => $user]);
                         unset($registeredUsers[$key]);
                         $assigned = true;
                     }
                 }
                 if (!$assigned) {
-                    $party->songs()->detach($song->id);
-                    $party->songs()->attach($song->id, ['user_id' => 1]);
+                    $party->songs()->updateExistingPivot($song->id, ['user_id' => 1]);
                 }
             }
             return response([

@@ -86,17 +86,19 @@
                 html += 'Duration: ' + parties[i].duration + '<br>';
                 html += 'Capacity: ' + parties[i].capacity + '<br>';
                 html += '</p>';
-                if(!parties[i].start) {
-                    if (parties[i].registered) {
-                        html += '<p><button id="singOut" onclick="confModal(\'Are you sure you want to sing out from this party?\', \'Sing out\', \'' + parties[i].sing_out_link + '\')" class="btn btn-primary">Sing out</button>';
-                        if (!parties[i].filled) {
-                            html += '<p><button id="singUp" onclick="confModal(\'Are you sure you want to sing up for this party?\', \'Sing up\', \'' + parties[i].sing_up_link + '\')" class="btn btn-primary" style="display: none">Sing up</button>';
+                if(parties[i].auth) {
+                    if (!parties[i].start) {
+                        if (parties[i].registered) {
+                            html += '<p><button id="singOut" onclick="confModal(\'Are you sure you want to sing out from this party?\', \'Sing out\', \'' + parties[i].sing_out_link + '\')" class="btn btn-primary">Sing out</button>';
+                            if (!parties[i].filled) {
+                                html += '<p><button id="singUp" onclick="confModal(\'Are you sure you want to sing up for this party?\', \'Sing up\', \'' + parties[i].sing_up_link + '\')" class="btn btn-primary" style="display: none">Sing up</button>';
+                            }
+                        } else {
+                            if (!parties[i].filled) {
+                                html += '<p><button id="singUp" onclick="confModal(\'Are you sure you want to sing up for this party?\', \'Sing up\', \'' + parties[i].sing_up_link + '\')" class="btn btn-primary" role="button">Sing up</button>';
+                            }
+                            html += '<p><button id="singOut" onclick="confModal(\'Are you sure you want to sing out from this party?\', \'Sing out\', \'' + parties[i].sing_out_link + '\')" class="btn btn-primary" style="display: none">Sing out</button>';
                         }
-                    } else {
-                        if (!parties[i].filled) {
-                            html += '<p><button id="singUp" onclick="confModal(\'Are you sure you want to sing up for this party?\', \'Sing up\', \'' + parties[i].sing_up_link + '\')" class="btn btn-primary" role="button">Sing up</button>';
-                        }
-                        html += '<p><button id="singOut" onclick="confModal(\'Are you sure you want to sing out from this party?\', \'Sing out\', \'' + parties[i].sing_out_link + '\')" class="btn btn-primary" style="display: none">Sing out</button>';
                     }
                 }
                 html += '</p>';
