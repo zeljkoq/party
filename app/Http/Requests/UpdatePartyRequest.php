@@ -4,6 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class UpdatePartyRequest
+ *
+ * @package App\Http\Requests
+ */
 class UpdatePartyRequest extends FormRequest
 {
     /**

@@ -4,6 +4,11 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+/**
+ * Class CheckRole
+ *
+ * @package App\Http\Middleware
+ */
 class CheckRole
 {
     /**
