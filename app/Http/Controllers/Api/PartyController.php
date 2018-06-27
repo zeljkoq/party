@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 
+/**
+ * Class PartyController
+ *
+ * @package App\Http\Controllers\Api
+ */
 class PartyController extends Controller
 {
     /**
